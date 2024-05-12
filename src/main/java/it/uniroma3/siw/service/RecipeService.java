@@ -17,8 +17,8 @@ public class RecipeService {
 		return recipeRepository.findById(id).get();
 	}
 
-	public Iterable<Recipe> findAll() {
-		return recipeRepository.findAll();
+	public List<Recipe> findAll() {
+		return (List<Recipe>) recipeRepository.findAll();
 	}
 
 	public void save(Recipe recipe) {

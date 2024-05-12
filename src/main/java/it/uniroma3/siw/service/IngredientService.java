@@ -18,8 +18,8 @@ public class IngredientService {
 		return ingredientRepository.findById(id).get();
 	}
 
-	public Iterable<Ingredient> findAll() {
-		return ingredientRepository.findAll();
+	public List<Ingredient> findAll() {
+		return (List<Ingredient>) ingredientRepository.findAll();
 	}
 
 	public void save(Ingredient ingredient) {
