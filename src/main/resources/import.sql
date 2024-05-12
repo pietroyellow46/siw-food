@@ -1,0 +1,30 @@
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Antonino','Cannavacciuolo','1975-11-09', '/images/logo-siw.png');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Carlo','Cracco','1965-10-08', '/images/logo-siw.png');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Iginio','Massari','1946-05-04', '/images/logo-siw.png');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Alessandro','Borghese','1976-09-19', '/images/logo-siw.png');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Joe','Bastianich','1968-09-17', '/images/logo-siw.png');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Max','Mariola','1975-12-13', '/images/chef/supermax.jpg');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Bruno','Barbieri','1962-08-28', '/images/chef/barbieri.jpg');
+insert into chef (id, name, surname, date_birth, path_image) values(nextval('chef_seq'), 'Giorgio','Locatelli','1963-10-20', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Pomodori', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Olio oliva', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Aglio', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Basilico', '/images/ingredient/basilico.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Pasta', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Formaggio Parmigiano Reggiano', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Mozzarella', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Prosciutto Crudo', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Cipolla', '/images/logo-siw.png');
+insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Riso Arborio', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Pizza Margherita', '/images/recipe/margherita.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Spaghetti alla Carbonara', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Risotto alla Milanese', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Ravioli di Ricotta e Spinaci', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Lasagne alla Bolognese', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Ossobuco alla Milanese', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Tiramisù', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Pesto alla Genovese', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Caprese Salad', '/images/logo-siw.png');
+insert into recipe (id, nome, path_image) values(nextval('recipe_seq'), 'Risotto ai Frutti di Mare', '/images/logo-siw.png');
+
+

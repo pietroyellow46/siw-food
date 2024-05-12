@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		SiwMovie - Homepage
+	</title>
+	<link rel="stylesheet" href="/css/stylesheet.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${userDetails}">
+			<span th:text="${userDetails.getUsername()}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${userDetails}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	
+	<div><img src="/images/logo-siw.png" width="50%" /></div>
+	<h1>Consulta l'archivio</h1>
+	<div>
+		<a href="/recipe">Elenco Ricette</a>
+	</div>
+	<div>
+		<a href="/chef">Elenco Chef</a>
+	</div>
+	<div>
+		<a href="/ingredient">Elenco Ingredienti</a>
+	</div>
+	<br>
+	<h1>Operazioni</h1>
+	<div>
+		<a href="/admin/formNewChef">Crea chef</a>
+	</div>
+	<div>
+		<a href="/admin/formNewIngredient">Crea ingrediwente</a>
+	</div>
+	<div>
+		<a href="/admin/formNewRecipe">Crea ricetta</a>
+	</div>
+	<div>
+		<a href="/searchChef">Cerca chef</a>
+	</div>
+	<div>
+		<a href="/searchRecipe">Cerca Ricetta</a>
+	</div>
+	<div>
+		<a href="/searchIngredient">Cerca ingrediente</a>
+	</div>
+	
+	<div>
+		<a href="admin/manageRecipe">Gestisci ricette</a>
+	</div>
+	
+	<div>
+		<a href="admin/manageIngredient">Gestisci ingredienti</a>
+	</div>
+	
+	<div>
+		<a href="admin/manageChef">Gestisci chef</a>
+	</div>
+</body>
+
+</html>

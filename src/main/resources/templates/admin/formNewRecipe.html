@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html> <head>
+    <title>New Movie</title>
+    <link rel="stylesheet" href="/css/stylesheet.css" />
+  </head>
+  <body>
+	  <header>
+		<div th:if="${userDetails}">
+			<span th:text="${userDetails.getUsername()}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${userDetails}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+    <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+    <h1>Aggiungi un artista</h1>
+    <form th:action="@{/admin/recipe}" method="POST" th:object="${recipe}">
+		 <div th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
+      </div>
+	<div>
+        Nome: <span><input required type="text" th:field="${recipe.nome}"/></span>
+                         <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+
+      </div>
+ 
+       <div>
+        path: <span><input type="text" th:field="${recipe.pathImage}"/></span>
+                         <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
+
+      </div>
+      <div>
+        <span><button type="submit">Conferma</button></span>
+      </div>
+    </form>
+  </body>
+</html>

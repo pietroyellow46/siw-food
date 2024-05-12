@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Film</title>
+	<link rel="stylesheet" href="/css/stylesheet.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${userDetails}">
+			<span th:text="${userDetails.getUsername()}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${userDetails}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
+	<h1>Film</h1>
+	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono film nel sistema</div>
+	<ul>
+		<li th:each="ingredient : ${ingredients}">
+			<span th:text="${ingredient.name}">Basilico</span>
+			<a th:href="@{'/admin/formUpdateIngredient' + '/' + ${ingredient.id}}">Aggiorna</a>
+		</li>
+	</ul>
+</body>
+
+</html>
