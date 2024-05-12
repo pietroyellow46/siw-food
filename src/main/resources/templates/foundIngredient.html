@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title>Ingredienti trovati</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,14 +17,13 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-	<h1>Film che soddisfano i requisiti</h1>
-	<div th:if="${ingredients.isEmpty()}">Non ci sono film che soddisfano i requisiti</div>
-	<ul th:if="${!ingredients.isEmpty()}">
-		<li th:each="ingredient : ${ingredients}">
-			<a th:href="@{'/ingredient' + '/' + ${ingredient.id}}"
-				th:text="${ingredient.name}">Up! (2000)</a>
-		</li>
-	</ul>
+	<h1>Ingredienti trovati</h1>
+	<div th:if="${ingredients.isEmpty()}">Non ci sono ingredienti con tale nome</div>
+	<div th:if="${!ingredients.isEmpty()}">
+		<span th:each="ingredient : ${ingredients}">
+			<a th:href="@{'/ingredient' + '/' + ${ingredient.id}}" th:text="${ingredient.name}">Broccoli</a>
+		</span>
+	</div>
 </body>
 
 </html>

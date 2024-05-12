@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title>Ricette trovate</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,14 +17,14 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-	<h1>Film che soddisfano i requisiti</h1>
-	<div th:if="${recipes.isEmpty()}">Non ci sono film che soddisfano i requisiti</div>
-	<ul th:if="${!recipes.isEmpty()}">
-		<li th:each="recipe : ${recipes}">
-			<a th:href="@{'/recipe' + '/' + ${recipe.id}}"
-				th:text="${recipe.nome}">Up! (2000)</a>
-		</li>
-	</ul>
+	<h1>Ricette trovate</h1>
+	<div th:if="${recipes.isEmpty()}">Non ci sono ricette con quel nome</div>
+	<div th:if="${!recipes.isEmpty()}">
+		<span th:each="recipe : ${recipes}">
+			<span th:if="${recipe.chef != null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (' + ${recipe.chef.name+' '+recipe.chef.surname} + ')'">Tagliatelle(Bruno Barbieri)</a></span>
+			<span th:if="${recipe.chef == null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (chef  non presente)'">Tagliatelle(chef non presente)</a></span>
+		</span>
+	</div>
 </body>
 
 </html>

@@ -171,4 +171,11 @@ public class RecipeController {
 		recipeService.save(recipe);
 		return "redirect:/admin/formUpdateRecipe/"+recipeId;
 	}
+	
+	@GetMapping("admin/removeRecipe/{recipeId}")
+	public String removeRecipe(@PathVariable("recipeId") Long recipeId, Model model) {
+		Recipe recipe = recipeService.findById(recipeId);
+		this.recipeService.deleteRecipe(recipe);
+		return "redirect:/admin/manageRecipe";
+	}
 }

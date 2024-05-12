@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title th:text="${recipe.nome}">Modifica Pizza Margherita</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -23,7 +23,7 @@
 		<span><img width="5%" th:src=${recipe.pathImage} /></span>
 	</div>
 	<div>
-			<a th:href="@{'/admin/updateRecipe' + '/' + ${recipe.id}}">Update ricetta</a>
+			<a th:href="@{'/admin/updateRecipe' + '/' + ${recipe.id}}">Modifica ricetta</a>
 	</div>
 	<div>
 			<a th:href="@{'/admin/removeRecipe' + '/' + ${recipe.id}}">Elimina ricetta</a>
@@ -31,27 +31,27 @@
 	<div>
 		<br>
 		<div th:if="${recipe.chef}">
-		<span>Regista: </span>
+		<span>Chef: </span>
 		<span th:text="${recipe.chef.name} "> Pietro</span>
 		<span th:text="${recipe.chef.surname} "> Barone</span>
 	</div>
-		<div th:unless="${recipe.chef}">Nessun regista inserito</div>
-	<a th:href="@{'/admin/addChef' + '/' + ${recipe.id}}">Modifica registra</a>
+		<div th:unless="${recipe.chef}">Nessuno chef inserito</div>
+	<a th:href="@{'/admin/addChef' + '/' + ${recipe.id}}">Modifica chef</a>
 </div>
 <br>
 <br>
 
 
-	<div th:if="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">Non ci sono attori registrati</div>
+	<div th:if="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">Non ci sono ingredienti inseriti per questa ricetta</div>
 
 	
 	<div th:unless="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">
-			<span>Attori: </span>
+			<span>Ingredienti: </span>
 				<ul>
 		<li th:each="ingredient : ${recipe.usedIngredients}">
-			<span th:text="${ingredient.ingredient.name}">Pietro</span>
-			<span th:text="${ingredient.quantity}">Barone</span>
-			<span th:text="${ingredient.measurement}">Barone</span>
+			<span th:text="${ingredient.ingredient.name}">Broccoli</span>
+			<span th:text="${ingredient.quantity}">10</span>
+			<span th:text="${ingredient.measurement}">grammi</span>
 		</li>
 	</ul>
 			
@@ -59,7 +59,7 @@
 		<a th:href="@{'/admin/updateIngredient/' + ${recipe.id}}">
 				<button type="button">Modifica</button>
 			</a>
-		<div th:unless="${recipe}">Film non esistente</div>
+		<div th:unless="${recipe}">Ricetta non esistente</div>
 				
 </body>
 

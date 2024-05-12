@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Chef</title>
+	<title>Ingredienti</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,8 +17,8 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Film</h1>
-	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono chef nel sistema</div>
+	<h1>Ingredienti inseriti</h1>
+	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
 	<ul>
 		<li th:each="ingredient : ${ingredients}">
 			<a th:href="@{'/ingredient' + '/' + ${ingredient.id}}" th:text="${ingredient.name}">Broccoli</a>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title>Chef trovati</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,14 +17,16 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-	<h1>Film che soddisfano i requisiti</h1>
-	<div th:if="${chef.isEmpty()}">Non ci sono film che soddisfano i requisiti</div>
-	<ul th:if="${!chef.isEmpty()}">
-		<li th:each="c : ${chef}">
-			<a th:href="@{'/chef' + '/' + ${c.id}}"
-				th:text="${c.name} + ' (' + ${c.surname}+')'">Up! (2000)</a>
-		</li>
-	</ul>
+	<h1>Chef trovati</h1>
+	<div th:if="${chef.isEmpty()}">Non ci sono chef con tale nome o cognome</div>
+	<div th:if="${!chef.isEmpty()}">
+		<span th:each="c : ${chef}">
+				<a th:href="@{'/chef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+' (' +${c.dateBirth.getDayOfMonth()}+'/'+ ${c.dateBirth.getMonthValue()}+'/'+${c.dateBirth.getYear()}  + ')'">Pietro Barone (2/10/2002)</a>
+				<span th:unless="${c.dateBirth}">
+				<a th:href="@{'/chef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+ ' (non presente)'">Pietro Barone (2/10/2002)</a>
+			</span>
+		</span>
+	</div>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html> <head>
-    <title>New Movie</title>
+    <title>Aggiungi ingrediente</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
   </head>
   <body>
@@ -14,24 +14,25 @@
 		</div>
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-    <h1>Aggiungi un artista</h1>
+    <h1>Aggiungi un ingrediente</h1>
     <form th:action="@{'/admin/usedIngredient/'+ ${ingredientId} +'/'+ ${recipeId}}" method="POST" th:object="${newUsedIngredient}">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
 	<div>
-        Nome: <span><input required type="text" th:field="${newUsedIngredient.quantity}"/></span>
+        Quantità': <span><input required type="text" th:field="${newUsedIngredient.quantity}"/></span>
                          <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
 
       </div>
  
        <div>
-        path: <span><input required type="text" th:field="${newUsedIngredient.measurement}"/></span>
+        Unità di misura: <span><input required type="text" th:field="${newUsedIngredient.measurement}"/></span>
                          <span th:if="${#fields.hasErrors('measurement')}" th:errors="*{measurement}"></span>
 
       </div>
+     	<br>
       <div>
-        <span><button type="submit">Conferma</button></span>
+        <span><button type="submit">Aggiungi</button></span>
       </div>
     </form>
   </body>

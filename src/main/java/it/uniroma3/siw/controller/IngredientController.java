@@ -32,6 +32,7 @@ public class IngredientController {
 	@GetMapping("/ingredient/{id}")
 	public String getIngredient(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("ingredient", this.ingredientService.findById(id));
+		model.addAttribute("recipes", this.recipeService.findRecipeWithIngredient(id));
 		return "ingredient.html";
 	}
 	

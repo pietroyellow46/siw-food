@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Scelta attori</title>
+	<title>Aggiungi ingredienti</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,19 +17,19 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-	<h1>Aggiungi attori</h1>
+	<h1>Aggiungi ingredienti</h1>
 	<div th:unless="${recipe.usedIngredients.isEmpty()}">
-	<span th:text="'Attori del film' + ${recipe.nome} + ':'">Attori del film Avengers: Endgame</span>
+	<span th:text="'Ingredienti della ricetta ' + ${recipe.nome} + ':'">Ingredienti della ricetta: Spaghetti alla carbonara</span>
 	</div>
-	<div th:if="${recipe.usedIngredients.isEmpty()}">Non ci sono attori per questo film</div>
+	<div th:if="${recipe.usedIngredients.isEmpty()}">Non ci sono ingredienti in questa ricetta</div>
 	<ul>
 		<li th:each="used_ingredient : ${recipe.usedIngredients}">
 			<span th:text="${used_ingredient.ingredient.name}"></span>
-			<a th:href="@{'/admin/removeIngredientFromRecipe/'+ ${used_ingredient.id}}">Cancella</a>
+			<a th:href="@{'/admin/removeIngredientFromRecipe/'+ ${used_ingredient.id}}">Elimina</a>
 		</li>
 	</ul>
 	<div>
-		Attori che si possono aggiungere:
+		Ingredienti che si possono aggiungere:
 		<ul>
 			<li th:each="ingredient : ${ingredientsToAdd}">
 				<span th:text="${ingredient.name}"></span>

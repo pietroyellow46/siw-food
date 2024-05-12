@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title th:text="${ingredient.name}">Broccoli</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,12 +17,22 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Dettagli Film</h1>
+	<h1>Dettagli ingrediente</h1>
 	<div th:if="${ingredient}">
-		<span th:text="${ingredient.name}">Up!</span>
-		<span><img width="5%" th:src=${ingredient.pathImage} /></span>
+		<span th:text="${ingredient.name}">Broccoli</span>
+		<span><img width="5%" th:src=${ingredient.pathImage}/></span>
 	</div>
 	<div th:unless="${ingredient}">Non esiste</div>
+	<br>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette con questo ingrediente</div>
+	<div th:unless="${recipes==null || recipes.isEmpty()}">Ricette presenti con questo ingrediente:
+	<div>
+		<div th:each="recipe : ${recipes}">
+			<span th:if="${recipe.chef != null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (' + ${recipe.chef.name+' '+recipe.chef.surname} + ')'">Tagliatelle(Bruno Barbieri)</a></span>
+			<span th:if="${recipe.chef == null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (chef  non presente)'">Tagliatelle(chef non presente)</a></span>
+		</div>
+	</div>
+	</div>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>Cerca Film</title>
+  <title>Cerca chef</title>
   <link rel="stylesheet" href="/css/stylesheet.css" />
  </head>
 
@@ -16,11 +16,13 @@
 		</div>
 	</header>
   <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-  <h1>Cerca film per anno</h1>
+  <h1>Cerca chef per nome o cognome</h1>
   <form th:action="@{/searchChef}" method="post">
-   <div>Anno: <input required type="text" th:value="${nameSurname}" name="nameSurname" />
+   <div>Nome o cognome: <input required type="text" th:value="${nameSurname}" name="nameSurname" />
    </div>
-   <div><input type="submit" /></div>
+      <br>
+
+        <span><button type="submit">Cerca</button></span>
   </form>
  </body>
 

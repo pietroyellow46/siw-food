@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title>Gestisci ingredienti</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,14 +17,14 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Film</h1>
-	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono film nel sistema</div>
-	<ul>
-		<li th:each="ingredient : ${ingredients}">
+	<h1>Ingredienti</h1>
+	<div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
+	<div>
+		<div th:each="ingredient : ${ingredients}">
 			<span th:text="${ingredient.name}">Basilico</span>
 			<a th:href="@{'/admin/formUpdateIngredient' + '/' + ${ingredient.id}}">Aggiorna</a>
-		</li>
-	</ul>
+		</div>
+	</div>
 </body>
 
 </html>

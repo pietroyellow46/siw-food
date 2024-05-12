@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html> <head>
-    <title>New Movie</title>
+    <title>Aggiungi ingrediente</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
   </head>
   <body>
@@ -14,7 +14,7 @@
 		</div>
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-    <h1>Aggiungi un artista</h1>
+    <h1>Aggiungi un ingrediente</h1>
     <form th:action="@{/admin/ingredient}" method="POST" th:object="${ingredient}">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
@@ -26,12 +26,13 @@
       </div>
  
        <div>
-        path: <span><input type="text" th:field="${ingredient.pathImage}"/></span>
+        Percorso immagine: <span><input type="text" th:field="${ingredient.pathImage}"/></span>
                          <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
 
       </div>
+      <br>
       <div>
-        <span><button type="submit">Conferma</button></span>
+        <span><button type="submit">Inserisci</button></span>
       </div>
     </form>
   </body>

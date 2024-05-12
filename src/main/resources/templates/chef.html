@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title th:text="${chef.name} +' '+ ${chef.surname}">Antonino Cannavacciuolo</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -19,9 +19,10 @@
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
 	<h1>Dettagli Film</h1>
 	<div th:if="${chef}">
-		<span th:text="${chef.name}">Up!</span>
-		<span th:text="${chef.surname}">Up!</span>
-		<span th:text="'(' + ${chef.dateBirth} + ')'">2000</span>
+		<span th:text="${chef.name}">Bruno</span>
+		<span th:text="${chef.surname}">Barbieri</span>
+		<span th:if="${chef.dateBirth!=null}" th:text="'(' + ${chef.dateBirth} + ')'">(2/10/2002)</span>
+		<span th:unless="${chef.dateBirth!=null}">(Data non presente)</span>
 		<span><img width="5%" th:src=${chef.pathImage} /></span>
 	</div>
 	<div th:unless="${chef}">Non esiste</div>

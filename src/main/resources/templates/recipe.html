@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Film</title>
+	<title th:text="${recipe.nome}">Pizza Margherita</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,29 +17,29 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Dettagli Film</h1>
+	<h1>Dettagli Ricetta</h1>
 	<div th:if="${recipe}">
-		<span th:text="${recipe.nome}">Up!</span>
+		<span th:text="${recipe.nome}">Tagliatelle</span>
 		<span><img width="5%" th:src=${recipe.pathImage} /></span>
 	</div>
 	<div th:unless="${recipe}">Non esiste</div>
 		<br>
 
 	<div th:if="${recipe.chef}">
-		<span>Regista: </span>
-		<span th:text="${recipe.chef.name} "> Pietro</span>
-		<span th:text="${recipe.chef.surname} "> Barone</span>
+		<span>Chef: </span>
+		<span th:text="${recipe.chef.name} "> Bruno</span>
+		<span th:text="${recipe.chef.surname} "> Barbieri</span>
 	</div>
-	<div th:unless="${recipe.chef}">Nessun regista inserito</div>
+	<div th:unless="${recipe.chef}">Chef non inserito</div>
 		<br>
 
-		<div th:if="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">Non ci sono attori registrati</div>
+		<div th:if="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">Non ci sono ingredienti registrati</div>
 <div th:unless="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">
-			<span>Attori: </span>
-				<ul>
+			<span>Ingredienti: </span>
+	<ul>
 		<li th:each="usedIngredients : ${recipe.usedIngredients}">
-			<span th:text="${usedIngredients.measurement}">Pietro</span>
-			<span th:text="${usedIngredients.quantity}">Barone</span>
+			<span th:if="${usedIngredients.quantity!=0}" th:text="${usedIngredients.ingredient.name}+' ' + ${usedIngredients.quantity}+' ' + ${usedIngredients.measurement}">10</span>
+			<span th:unless="${usedIngredients.quantity!=0}" th:text="${usedIngredients.ingredient.name} +' ' + ${usedIngredients.measurement}">10</span>
 		</li>
 	</ul>
 </body>
