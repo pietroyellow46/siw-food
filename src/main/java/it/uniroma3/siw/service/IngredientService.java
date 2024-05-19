@@ -27,7 +27,7 @@ public class IngredientService {
 	}
 	
 	public List<Ingredient> findByName(String name) {
-		return this.ingredientRepository.findByName(name);
+		return this.ingredientRepository.findByNameContaining(name);
 	}
 	
 	public List<Ingredient> findIngredientNotInRecipe(Long idRecipe){

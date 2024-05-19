@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title th:text="${chef.name + ' ' + chef.surname}">Bruno Barbieri</title>
+	<link rel="stylesheet" href="/css/stylesheet.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${userDetails}">
+			<span th:text="${userDetails.getUsername()}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${userDetails}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
+	<h1>Dettagli ingrediente</h1>
+	<div th:if="${chef}">
+		<span th:text="${chef.name + ' ' +chef.surname}">Up!</span>
+		<span><img width="5%" th:src=${chef.pathImage} /></span>
+	</div>
+	<div>
+			<a th:href="@{'/admin/removeChef' + '/' + ${chef.id}}">Elimina chef</a>
+	</div>
+		<div>
+			<a th:href="@{'/admin/changeChef' + '/' + ${chef.id}}">Modifica chef</a>
+	</div>
+<br>
+<br>
+
+
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette con questo ingrediente</div>
+
+	
+	<div th:unless="${recipes==null || recipes.isEmpty()}">
+			<span>Ricette: </span>
+				<ul>
+		<li th:each="recipe : ${recipes}">
+			<span th:text="${recipe.nome}">Pizza</span>
+			<span th:if="${recipe.chef != null}" th:text="'('+${recipe.chef.name} + ' ' + ${recipe.chef.surname}+')'">Barone</span>
+			<span th:unless="${recipe.chef!=null}">(nessuno chef presente)</span>
+		</li>
+	</ul>
+			
+		</div>
+		<div th:unless="${chef}">Ingrediente non esistente</div>
+				
+</body>
+
+</html>

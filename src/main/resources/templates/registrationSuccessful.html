@@ -3,7 +3,7 @@
 
 <head>
 	<title>SiwMovie - Registrazione conclusa</title>
-	<link rel="stylesheet" href="/css/stile.css" />
+	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
 <body>
@@ -24,15 +24,15 @@
 	<h1>Congratulazioni ti sei registrato!</h1>
 	<div>
 		<span>Nome: </span>
-		<span th:text="${user.name}"></span>
+		<span th:text="${chef.name}"></span>
 	</div>
 	<div>
 		<span>Cognome: </span>
-		<span th:text="${user.surname}"></span>
+		<span th:text="${chef.surname}"></span>
 	</div>
 	<div>
 		<span>Email: </span>
-		<span th:text="${user.email}"></span>
+		<span th:text="${chef.email}"></span>
 	</div>
 </body>
 </html>

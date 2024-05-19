@@ -11,8 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import it.uniroma3.siw.model.Chef;
 import it.uniroma3.siw.model.Credentials;
-import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.validator.CredentialsValidator;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class AuthenticationController {
 	
 	@GetMapping("/register") 
 	public String showRegisterForm (Model model) {
-		model.addAttribute("user", new User());
+		model.addAttribute("chef", new Chef());
 		model.addAttribute("credentials", new Credentials());
 		return "formRegisterUser.html";
 	}
@@ -43,32 +44,36 @@ public class AuthenticationController {
 	@GetMapping("/") 
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.print(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
 		if (authentication instanceof AnonymousAuthenticationToken) {
 	        return "index.html";
 		}
 		else {		
 			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+			System.out.print(credentials.getUsername());
 			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
 				return "admin/indexAdmin.html";
 			}
+			return "chef/indexChef.html";
 		}
-        return "index.html";
 	}
 		
     @GetMapping("/success")
     public String defaultAfterLogin(Model model) {
         
+    	return "redirect:/";
+    	/*
     	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
     	if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
             return "admin/indexAdmin.html";
         }
-        return "index.html";
+        return "indexChef.html";*/
     }
 
 	@PostMapping("/register" )
-    public String registerUser(@Valid @ModelAttribute("user") User user,
+    public String registerUser(@Valid @ModelAttribute("chef") Chef chef,
                  BindingResult userBindingResult, @Valid
                  @ModelAttribute("credentials") Credentials credentials,
                  BindingResult credentialsBindingResult,
@@ -77,9 +82,9 @@ public class AuthenticationController {
         // se user e credential hanno entrambi contenuti validi, memorizza User e the Credentials nel DB
 		this.credentialsValidator.validate(credentials, credentialsBindingResult);
 		if(!userBindingResult.hasErrors() && ! credentialsBindingResult.hasErrors()) {
-            credentials.setUser(user);
+            credentials.setUser(chef);
             credentialsService.saveCredentials(credentials);
-            model.addAttribute("user", user);
+            model.addAttribute("chef", chef);
             System.out.println("noerr");
             return "registrationSuccessful.html";
         }

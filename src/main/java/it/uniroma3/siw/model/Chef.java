@@ -18,17 +18,19 @@ public class Chef {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	
+
 	private Long id;
-	
+
 	private String name;
-	
+
 	private String surname;
-	
+
+	private String email;
+
 	private LocalDate dateBirth;
-	
+
 	private String pathImage;
-	
+
 	@OneToMany(mappedBy = "chef")
 	private List<Recipe> recipes;
 
@@ -71,6 +73,15 @@ public class Chef {
 	public void setPathImage(String pathImage) {
 		this.pathImage = pathImage;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 	public List<Recipe> getRecipes() {
 		return recipes;

@@ -15,7 +15,7 @@
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Aggiungi un ingrediente</h1>
-    <form th:action="@{'/admin/usedIngredient/'+ ${ingredientId} +'/'+ ${recipeId}}" method="POST" th:object="${newUsedIngredient}">
+    <form th:action="@{'/chef/usedIngredient/'+ ${ingredientId} +'/'+ ${recipeId}}" method="POST" th:object="${newUsedIngredient}">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>

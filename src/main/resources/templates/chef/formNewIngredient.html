@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html> <head>
-    <title>Aggiungi ricetta</title>
+    <title>Aggiungi ingrediente</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
   </head>
   <body>
@@ -14,19 +14,19 @@
 		</div>
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-    <h1>Aggiungi una ricetta</h1>
-    <form th:action="@{/admin/recipe}" method="POST" th:object="${recipe}">
+    <h1>Aggiungi un ingrediente</h1>
+    <form th:action="@{/chef/ingredient}" method="POST" th:object="${ingredient}">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
 	<div>
-        Nome: <span><input required type="text" th:field="${recipe.nome}"/></span>
-                         <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+        Nome: <span><input required type="text" th:field="${ingredient.name}"/></span>
+                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
       </div>
  
        <div>
-        Percorso immagine: <span><input type="text" th:field="${recipe.pathImage}"/></span>
+        Percorso immagine: <span><input type="text" th:field="${ingredient.pathImage}"/></span>
                          <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
 
       </div>

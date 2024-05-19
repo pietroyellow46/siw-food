@@ -36,17 +36,17 @@ public class IngredientController {
 		return "ingredient.html";
 	}
 	
-	@GetMapping("admin/formNewIngredient")
+	@GetMapping("chef/formNewIngredient")
 	public String formNewIngredient(Model model) {
 		model.addAttribute("ingredient", new Ingredient());
-		return "admin/formNewIngredient.html";
+		return "chef/formNewIngredient.html";
 	}
 
-	@PostMapping("admin/ingredient")
+	@PostMapping("chef/ingredient")
 	public String newIngredient(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult, Model model){
 		// this.movieValidator.validate(movie, bindingResult);
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
-			return "admin/formNewIngredient.html";
+			return "chef/formNewIngredient.html";
 		} else {
 			this.ingredientService.save(ingredient);
 			model.addAttribute(ingredient);
@@ -55,23 +55,24 @@ public class IngredientController {
 	}
 	
 	@GetMapping("/searchIngredient")
-	public String searchChef(Model model) {
+	public String searchIngredient(Model model) {
 		return "formSearchIngredient.html";
 	}
 	
 	@PostMapping("/searchIngredient")
-	public String foundChef(Model model, @RequestParam String name) {
+	public String foundIngredient(Model model, @RequestParam String name) {
 		model.addAttribute("ingredients", this.ingredientService.findByName(name));
 		return "foundIngredient.html";
 	}
 	
 	@GetMapping("/searchIngredient/{name}")
-	public String searchChef(@PathVariable("name") String name, Model model) {
-		return foundChef(model, name);
+	public String searchIngredient(@PathVariable("name") String name, Model model) {
+		String newName = name.replace("_", " ");
+		return foundIngredient(model, newName);
 	}
 	
 	@GetMapping("admin/removeIngredient/{ingredientId}")
-	public String removeRecipe(@PathVariable("ingredientId") Long ingredientId, Model model) {
+	public String removeIngredient(@PathVariable("ingredientId") Long ingredientId, Model model) {
 		Ingredient i = ingredientService.findById(ingredientId);
 		this.ingredientService.deleteIngredient(i);
 		return "redirect:/admin/manageIngredient";

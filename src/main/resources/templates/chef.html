@@ -25,6 +25,15 @@
 		<span th:unless="${chef.dateBirth!=null}">(Data non presente)</span>
 		<span><img width="5%" th:src=${chef.pathImage} /></span>
 	</div>
+	<br>
+	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette di questo chef</div>
+	<div th:unless="${recipes==null || recipes.isEmpty()}">Ricette registrate di questo chef:</div>
+	<div>
+		<div th:each="recipe : ${recipes}">
+			<span th:if="${recipe.chef != null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (' + ${recipe.chef.name+' '+recipe.chef.surname} + ')'">Tagliatelle(Bruno Barbieri)</a></span>
+			<span th:if="${recipe.chef == null}"><a th:href="@{'/recipe' + '/' + ${recipe.id}}" th:text="${recipe.nome} + ' (chef  non presente)'">Tagliatelle(chef non presente)</a></span>
+		</div>
+	</div>
 	<div th:unless="${chef}">Non esiste</div>
 </body>
 

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.authentication;
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
+import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
+
 
 
 @Configuration
@@ -39,11 +40,13 @@ public class AuthConfiguration {
 		httpSecurity
 		.csrf().and().cors().disable()
 		.authorizeHttpRequests()
-		 .requestMatchers("/**").permitAll()
-		// chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-		.requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico", "/formSearchMovies", "movie/**", "artist/**", "rest/movie/**").permitAll()
+		// .requestMatchers("/**").permitAll()
+		// chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini,
+		.requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**").permitAll()
 		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
-		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchMovies").permitAll()
+		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchRecipe","/searchIngredient", "/searchChef").permitAll()
+		.requestMatchers(HttpMethod.GET,"/chef/**").hasAnyAuthority(DEFAULT_ROLE, ADMIN_ROLE)
+		.requestMatchers(HttpMethod.POST,"/chef/**").hasAnyAuthority(DEFAULT_ROLE, ADMIN_ROLE)
 		.requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 		.requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 		// tutti gli utenti autenticati possono accere alle pagine rimanenti 

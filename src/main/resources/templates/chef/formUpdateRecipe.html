@@ -36,7 +36,6 @@
 		<span th:text="${recipe.chef.surname} "> Barone</span>
 	</div>
 		<div th:unless="${recipe.chef}">Nessuno chef inserito</div>
-	<a th:href="@{'/admin/addChef' + '/' + ${recipe.id}}">Modifica chef</a>
 </div>
 <br>
 <br>
@@ -56,7 +55,7 @@
 	</ul>
 			
 		</div>
-		<a th:href="@{'/admin/updateIngredient/' + ${recipe.id}}">
+		<a th:href="@{'/chef/updateIngredient/' + ${recipe.id}}">
 				<button type="button">Modifica</button>
 			</a>
 		<div th:unless="${recipe}">Ricetta non esistente</div>

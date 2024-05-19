@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Chef</title>
+	<title>Gestisci chef</title>
 	<link rel="stylesheet" href="/css/stylesheet.css" />
 </head>
 
@@ -17,13 +17,13 @@
 		</div>
 	</header>
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Chef presenti</h1>
+<h1>Chef presenti</h1>
 	<div th:if="${chef==null || chef.isEmpty()}">Non ci sono chef nel sistema</div>
 	<div>
 		<div th:each="c : ${chef}">
-			<a th:if="${c.dateBirth!=null}" th:href="@{'/allChef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+' (' +${c.dateBirth.getDayOfMonth()}+'/'+ ${c.dateBirth.getMonthValue()}+'/'+${c.dateBirth.getYear()}  + ')'">Pietro Barone (2/10/2002)</a>
+			<a th:if="${c.dateBirth!=null}" th:href="@{'/admin/formUpdateChef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+' (' +${c.dateBirth.getDayOfMonth()}+'/'+ ${c.dateBirth.getMonthValue()}+'/'+${c.dateBirth.getYear()}  + ')'">Pietro Barone (2/10/2002)</a>
 				<span th:unless="${c.dateBirth!=null}">
-				<a th:href="@{'/allChef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+ ' (non presente)'">Pietro Barone (2/10/2002)</a>
+				<a th:href="@{'/admin/formUpdateChef' + '/' + ${c.id}}" th:text="${c.name} +' '+ ${c.surname}+ ' (non presente)'">Pietro Barone (2/10/2002)</a>
 			</span>
 		</div>
 	</div>

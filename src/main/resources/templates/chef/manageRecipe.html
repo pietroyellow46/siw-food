@@ -25,7 +25,7 @@
 			<span th:if="${recipe.chef!=null}" th:text="${recipe.nome} + ' (' + ${recipe.chef.name} + ')'">Tagliatelle(Barbieri)</span>
 			<span th:unless="${recipe.chef!=null}" th:text="${recipe.nome} + ' (Chef non presente)'">Tagliatelle(Chef non presente)</span>
 			<br>
-			<a th:href="@{'/admin/formUpdateRecipe' + '/' + ${recipe.id}}">Aggiorna</a>
+			<a th:href="@{'/chef/formUpdateRecipe' + '/' + ${recipe.id}}">Aggiorna</a>
 			</div>
 			<br>
 		</div>

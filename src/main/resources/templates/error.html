@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>We've got some trouble</title>
+      <title>Errore inaspettato</title>
    </head>
    <body>
       <div>
-         <h1>Our apologies base daje.</h1>
-         <p>This page stepped out for a quick ride.</p>
-         <p>Please go back to our homepage to restart your browsing experience.</p>
+         <h1>Le nostre scuse, Siw-Food ha avuto un problema.</h1>
+         <p th:if="${errorCode!=null}" th:text="'Codice errore: ' + ${errorCode}">Codice errore: 404</p>
+         <p>Per favore torna alla home e continua la navigazione(speriamo vada meglio :-|).</p>
       </div>
-      <a href="/">Go Home</a>
+      <a href="/">Home</a>
    </body>
 </html>

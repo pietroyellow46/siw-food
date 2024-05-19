@@ -25,7 +25,7 @@
 	<ul>
 		<li th:each="used_ingredient : ${recipe.usedIngredients}">
 			<span th:text="${used_ingredient.ingredient.name}"></span>
-			<a th:href="@{'/admin/removeIngredientFromRecipe/'+ ${used_ingredient.id}}">Elimina</a>
+			<a th:href="@{'/chef/removeIngredientFromRecipe/'+ ${used_ingredient.id}}">Elimina</a>
 		</li>
 	</ul>
 	<div>
@@ -33,12 +33,12 @@
 		<ul>
 			<li th:each="ingredient : ${ingredientsToAdd}">
 				<span th:text="${ingredient.name}"></span>
-				<a th:href="@{'/admin/formNewIngredient/'+ ${ingredient.id}+'/'+${recipe.id}}">Aggiungi</a>
+				<a th:href="@{'/chef/formNewIngredient/'+ ${ingredient.id}+'/'+${recipe.id}}">Aggiungi</a>
 			</li>
 		</ul>
 	<div>
 	<div>
-		<a th:href="@{'/admin/formUpdateRecipe/'+ ${recipe.id}}"><button type="button">Fine</button></a>
+		<a th:href="@{'/chef/formUpdateRecipe/'+ ${recipe.id}}"><button type="button">Fine</button></a>
 	</div>
 </body>
 
