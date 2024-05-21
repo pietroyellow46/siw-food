@@ -46,4 +46,8 @@ public class RecipeService {
 	public List<Recipe> findRecipeWithIngredient(Long ingredientId){
 		return this.recipeRepository.findRecipeWithIngredient(ingredientId);
 	}
+	
+	public boolean isRecipeofChef(Long idRecipe, Long idChef) {
+		return this.recipeRepository.isRecipeofChef(idRecipe, idChef);
+	}
 }

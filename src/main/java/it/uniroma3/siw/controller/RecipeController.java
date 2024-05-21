@@ -118,7 +118,8 @@ public class RecipeController {
 	public String formUpdateMovies(@PathVariable("id") Long id, Model model) {
 
 		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());		
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
 		boolean isAdmin = credentials.getRole().equals(Credentials.ADMIN_ROLE);
 
 		Recipe recipe = this.recipeService.findById(id);
@@ -128,8 +129,14 @@ public class RecipeController {
 			return "admin/formUpdateRecipe.html";
 		}
 		else {
-			return "chef/formUpdateRecipe.html";
-
+			boolean isMineRecipe = this.recipeService.isRecipeofChef(id, idChef);
+			System.out.println(isMineRecipe);
+			if (isMineRecipe) {
+				return "chef/formUpdateRecipe.html";
+			}
+			else {
+				return "error.html";
+			}
 		}
 	}
 
@@ -151,22 +158,46 @@ public class RecipeController {
 	@GetMapping("chef/updateIngredient/{id}")
 	public String updateIngredients(@PathVariable("id") Long id, Model model) {
 
-		List<Ingredient> ingredientsToAdd = this.ingredientsService.findIngredientNotInRecipe(id);
-		model.addAttribute("ingredientsToAdd", ingredientsToAdd);
-		model.addAttribute("recipe", this.recipeService.findById(id));
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
 
-		return "chef/updateIngredient.html";
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(id, idChef);
+
+		if (isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE) ) {
+			List<Ingredient> ingredientsToAdd = this.ingredientsService.findIngredientNotInRecipe(id);
+			model.addAttribute("ingredientsToAdd", ingredientsToAdd);
+			model.addAttribute("recipe", this.recipeService.findById(id));
+
+			return "chef/updateIngredient.html";
+		}
+		else {
+			return "error.html";
+		}
+
 	}
 
 	@GetMapping("chef/formNewIngredient/{ingredientId}/{recipeId}")
 	public String addIngredientToRecipe(@PathVariable("ingredientId") Long ingredientId, @PathVariable("recipeId") Long recipeId, Model model) {
-		UsedIngredient newUsedIngredient = new UsedIngredient();
-		newUsedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
-		newUsedIngredient.setRecipe(this.recipeService.findById(recipeId));
-		model.addAttribute("newUsedIngredient",newUsedIngredient);
-		model.addAttribute("ingredientId",ingredientId);
-		model.addAttribute("recipeId",recipeId);
-		return "chef/formNewUsedIngredient.html";
+
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
+
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
+
+		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+			UsedIngredient newUsedIngredient = new UsedIngredient();
+			newUsedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
+			newUsedIngredient.setRecipe(this.recipeService.findById(recipeId));
+			model.addAttribute("newUsedIngredient",newUsedIngredient);
+			model.addAttribute("ingredientId",ingredientId);
+			model.addAttribute("recipeId",recipeId);
+			return "chef/formNewUsedIngredient.html";
+		}
+		else {
+			return "error.html";
+		}
 	}
 
 	@PostMapping("chef/usedIngredient/{ingredientId}/{recipeId}")
@@ -175,10 +206,22 @@ public class RecipeController {
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "chef/formNewUsedIngredient.html";
 		} else {
-			usedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
-			usedIngredient.setRecipe(this.recipeService.findById(recipeId));
-			this.usedIngredientService.save(usedIngredient);
-			return "redirect:/chef/updateIngredient/"+recipeId;
+
+			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+			Long idChef = credentials.getUser().getId();
+
+			boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
+
+			if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+				usedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
+				usedIngredient.setRecipe(this.recipeService.findById(recipeId));
+				this.usedIngredientService.save(usedIngredient);
+				return "redirect:/chef/updateIngredient/"+recipeId;
+			}
+			else {
+				return "error.html";
+			}
 		}
 	}
 
@@ -193,27 +236,64 @@ public class RecipeController {
 
 	@GetMapping("chef/updateRecipe/{recipeId}")
 	public String updateRecipe(@PathVariable("recipeId") Long recipeId, Model model) {
-		Recipe recipe = recipeService.findById(recipeId);
-		model.addAttribute("recipe", recipe);
-		model.addAttribute("recipeId", recipeId);
-		return "chef/formChangeRecipe.html";
+
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
+
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
+
+		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+			Recipe recipe = recipeService.findById(recipeId);
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("recipeId", recipeId);
+			return "chef/formChangeRecipe.html";
+		}
+
+		return "error.html";
 	}
 
 	@PostMapping("chef/recipe/{recipeId}")
 	public String changeRecipe(@Valid @ModelAttribute("recipe") Recipe recipe,BindingResult bindingResult, Model model, @PathVariable("recipeId") Long recipeId){
-		Recipe oldRecipe = recipeService.findById(recipeId);
-		System.out.println(recipeId);
-		recipe.setId(recipeId);
-		recipe.setChef(oldRecipe.getChef());
-		recipe.setUsedIngredients(oldRecipe.getUsedIngredients());
-		recipeService.save(recipe);
-		return "redirect:/chef/formUpdateRecipe/"+recipeId;
+
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
+
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
+
+		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+			Recipe oldRecipe = recipeService.findById(recipeId);
+			System.out.println(recipeId);
+			recipe.setId(recipeId);
+			recipe.setChef(oldRecipe.getChef());
+			recipe.setUsedIngredients(oldRecipe.getUsedIngredients());
+			recipeService.save(recipe);
+			return "redirect:/chef/formUpdateRecipe/"+recipeId;
+		}
+		else {
+			return "error.html";
+		}
 	}
 
 	@GetMapping("chef/removeRecipe/{recipeId}")
 	public String removeRecipe(@PathVariable("recipeId") Long recipeId, Model model) {
-		Recipe recipe = recipeService.findById(recipeId);
-		this.recipeService.deleteRecipe(recipe);
-		return "redirect:/chef/manageRecipe";
+
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		Long idChef = credentials.getUser().getId();
+
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
+
+		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+			Recipe recipe = recipeService.findById(recipeId);
+			this.recipeService.deleteRecipe(recipe);
+			return "redirect:/chef/manageRecipe";
+		}
+		else {
+			return "error.html";
+		}
+
+
 	}
 }

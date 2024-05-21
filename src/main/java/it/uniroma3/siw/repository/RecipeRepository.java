@@ -22,4 +22,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
 	@Query(value = "SELECT recipe.* FROM recipe JOIN used_ingredient ON recipe.id = used_ingredient.recipe_id JOIN ingredient ON used_ingredient.ingredient_id = ingredient.id WHERE ingredient.id = :ingredientId", nativeQuery = true)
 	public List<Recipe> findRecipeWithIngredient(@Param("ingredientId") Long id);
+	
+	@Query(value = "SELECT EXISTS (SELECT 1 FROM recipe WHERE chef_id = :idChef AND id = :idRecipe) AS ricetta_presente", nativeQuery = true)
+	public boolean isRecipeofChef(@Param("idRecipe") Long idRecipe,@Param("idChef") Long idChef);
 }

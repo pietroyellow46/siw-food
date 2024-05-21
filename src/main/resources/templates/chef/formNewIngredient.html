@@ -2,6 +2,8 @@
 <html> <head>
     <title>Aggiungi ingrediente</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
+    <script src="/js/3.7.1_jquery.min.js"></script>
+    <script src="/js/thumbnail.js"></script>
   </head>
   <body>
 	  <header>
@@ -15,7 +17,7 @@
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Aggiungi un ingrediente</h1>
-    <form th:action="@{/chef/ingredient}" method="POST" th:object="${ingredient}">
+    <form th:action="@{/chef/ingredient}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
@@ -24,12 +26,16 @@
                          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
       </div>
- 
-       <div>
-        Percorso immagine: <span><input type="text" th:field="${ingredient.pathImage}"/></span>
+      
+        <div>
+        Percorso immagine: <span><input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/></span>
                          <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
 
       </div>
+      
+      <div>
+		  <img id="thumbnail" alt="logoPreview"/>
+	  </div>
       <br>
       <div>
         <span><button type="submit">Inserisci</button></span>

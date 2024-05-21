@@ -7,25 +7,28 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Ingredient {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String name;
-	
+
+	@Column(nullable = true)
 	private String pathImage;
-	
+
 	@OneToMany (mappedBy = "ingredient", cascade = {CascadeType.REMOVE})
 	private List<UsedIngredient> usedIngredients;
 
@@ -59,6 +62,12 @@ public class Ingredient {
 
 	public void setPathImage(String pathImage) {
 		this.pathImage = pathImage;
+	}
+
+	@Transient
+	public String getPhotoImagePath() {
+		if (pathImage == null) return null;
+		return "/images/ingredient/"+pathImage;
 	}
 
 	@Override
