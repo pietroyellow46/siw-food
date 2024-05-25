@@ -20,7 +20,7 @@
 	<h1>Dettagli Film</h1>
 	<div th:if="${recipe}">
 		<span th:text="${recipe.nome}">Up!</span>
-		<span><img width="5%" th:src=${recipe.pathImage} /></span>
+		<span><img width="5%" th:src=${recipe.MainImagePath} /></span>
 	</div>
 	<div>
 			<a th:href="@{'/chef/updateRecipe' + '/' + ${recipe.id}}">Modifica ricetta</a>
@@ -56,7 +56,7 @@
 	</ul>
 			
 		</div>
-		<a th:href="@{'/admin/updateIngredient/' + ${recipe.id}}">
+		<a th:href="@{'/chef/updateIngredient/' + ${recipe.id}}">
 				<button type="button">Modifica</button>
 			</a>
 		<div th:unless="${recipe}">Ricetta non esistente</div>

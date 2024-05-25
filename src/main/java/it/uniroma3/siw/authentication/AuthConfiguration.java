@@ -14,13 +14,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
 import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
 
-
-
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration {
 	@Autowired
 	private DataSource dataSource;
+
+	//specifichi come ricavare le credenziali dell utente
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()
@@ -29,38 +29,45 @@ public class AuthConfiguration {
 		.usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credentials WHERE username=?");
 	}
 
+	//cripta password
 	@Bean
 	public PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
 
+	//configuri permessi sulle richieste
 	@Bean
 	protected SecurityFilterChain configure(final HttpSecurity httpSecurity) 
 			throws Exception{
-		httpSecurity
-		.csrf().and().cors().disable()
+		httpSecurity.csrf().and().cors().disable()
 		.authorizeHttpRequests()
 		// .requestMatchers("/**").permitAll()
-		// chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini,
+
+		//cosa accede chi non loggato
 		.requestMatchers(HttpMethod.GET,"/","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**").permitAll()
-		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
 		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchRecipe","/searchIngredient", "/searchChef").permitAll()
+
+		//cosa accede chi loggato o admin o chef normale
 		.requestMatchers(HttpMethod.GET,"/chef/**").hasAnyAuthority(DEFAULT_ROLE, ADMIN_ROLE)
 		.requestMatchers(HttpMethod.POST,"/chef/**").hasAnyAuthority(DEFAULT_ROLE, ADMIN_ROLE)
+
+		//cosa accede admin
 		.requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 		.requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
-		// tutti gli utenti autenticati possono accere alle pagine rimanenti 
+
+		//tutte le altre richieste basta che sei autenticato 
 		.anyRequest().authenticated()
-		// LOGIN: qui definiamo il login
+
+		// login a /login, permesso a tutti, se va bene /success senno /login?error=true
 		.and().formLogin()
 		.loginPage("/login")
 		.permitAll()
 		.defaultSuccessUrl("/success", true)
 		.failureUrl("/login?error=true")
-		// LOGOUT: qui definiamo il logout
+
+		//per fare logout fai get a /logout, ti ritorna a / se va bene
 		.and()
 		.logout()
-		// il logout è attivato con una richiesta GET a "/logout"
 		.logoutUrl("/logout")
 		// in caso di successo, si viene reindirizzati alla home
 		.logoutSuccessUrl("/")
@@ -71,5 +78,3 @@ public class AuthConfiguration {
 		return httpSecurity.build();
 	}
 }
-
-

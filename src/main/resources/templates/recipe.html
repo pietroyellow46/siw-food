@@ -20,7 +20,7 @@
 	<h1>Dettagli Ricetta</h1>
 	<div th:if="${recipe}">
 		<span th:text="${recipe.nome}">Tagliatelle</span>
-		<span><img width="5%" th:src=${recipe.pathImage} /></span>
+		<span><img width="5%" th:src="@{${recipe.MainImagePath}}" /></span>
 	</div>
 	<div th:unless="${recipe}">Non esiste</div>
 		<br>

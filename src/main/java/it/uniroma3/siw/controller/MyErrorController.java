@@ -1,6 +1,4 @@
 package it.uniroma3.siw.controller;
-
-
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,8 +23,11 @@ public class MyErrorController implements ErrorController  {
 			else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
 				return "error-500";
 			}
+			else if(statusCode == HttpStatus.UNAUTHORIZED.value()) {
+				return "error-500";
+			}
 		}
 		return "error";
 	}
-	
+
 }

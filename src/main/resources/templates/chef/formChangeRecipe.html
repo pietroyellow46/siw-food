@@ -2,6 +2,8 @@
 <html> <head>
     <title th:text="${recipe.nome}">Risotto alla milanese</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
+     <script src="/js/3.7.1_jquery.min.js"></script>
+    <script src="/js/thumbnail.js"></script>
   </head>
   <body>
 	  <header>
@@ -15,7 +17,7 @@
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Modifica ricetta</h1>
-    <form th:action="@{'/chef/recipe/'+ ${recipeId}}" method="POST" th:object="${recipe}">
+    <form th:action="@{'/chef/recipe/'+ ${recipeId}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
@@ -25,10 +27,29 @@
 
       </div>
  
+       
        <div>
-        Percorso immagine: <span><input type="text" th:field="${recipe.pathImage}"/></span>
-                         <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
+        Percorso immagine main: <input type="file" name="primaryImage" id="primaryImage" accept="image/png, image/jpeg"/>
+         <div>
+		  <img id="thumbnail" alt="logoPreview"/>
+	  </div>
 
+      </div>
+      
+      <div>Percorso immagine extra1: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
+      	   <div>
+		  <img id="thumbnail0" alt="logoPreview"/>
+	  </div>
+      </div>
+      <div>Percorso immagine extra2: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
+         <div>
+		  <img id="thumbnail1" alt="logoPreview"/>
+	  </div>
+      </div>
+      <div>Percorso immagine extra3: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
+         <div>
+		  <img id="thumbnail2" alt="logoPreview"/>
+	  </div>
       </div>
       <br>
       <div>

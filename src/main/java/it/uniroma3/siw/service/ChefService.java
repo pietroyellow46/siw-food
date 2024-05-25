@@ -18,39 +18,47 @@ public class ChefService {
 	@Autowired
 	private ChefRepository chefRepository;
 
+	//cerca per id
 	public Chef findById(Long id) {
 		return chefRepository.findById(id).get();
 	}
 
+	//cerca tutti
 	public List<Chef> findAll() {
 		return (List<Chef>) chefRepository.findAll();
 	}
 	
+	//cerca tutti non admin
 	public List<Chef> findAllNotAdmin(){
 		return this.chefRepository.findAllNotAdmin();
 	}
 	
+	//cerca per nome o cognome
 	public List<Chef> findNomeCognome(String nomeCognome){
 		return this.chefRepository.findNomeCognome(nomeCognome);
 	}
 
-
+	//salva
 	public void save(Chef chef) {
 		chefRepository.save(chef);
 	}
 	
+	//cerca per nome
 	public List<Chef> findByName(String name){
 		return chefRepository.findByName(name);
 	}
 	
+	//cerca per cognome
 	public List<Chef> findBySurname(String surname){
 		return chefRepository.findBySurname(surname);
 	}
 	
+	//cerca per nome o cognome
 	public List<Chef> findByNameOrSurname(String name, String surname){
 		return chefRepository.findByNameOrSurname(name,surname);
 	}
 	
+	//elimina chef di id passato
 	public void deleteById(Long id) {
 		this.chefRepository.deleteById(id);
 	}

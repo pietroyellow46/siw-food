@@ -2,24 +2,27 @@ package it.uniroma3.siw.model;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.Transient;
 
+//name surname not blank
+//email formato email
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Chef {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	private Long id;
 
 	private String name;
@@ -35,6 +38,14 @@ public class Chef {
 
 	@OneToMany(mappedBy = "chef")
 	private List<Recipe> recipes;
+	
+	@OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
+	private Credentials credential;
+	
+	@PreRemove
+	private void preRemove() {
+	   recipes.forEach(recipe -> recipe.setChef(null));
+	}
 
 	public Long getId() {
 		return id;
@@ -74,6 +85,12 @@ public class Chef {
 
 	public void setPathImage(String pathImage) {
 		this.pathImage = pathImage;
+	}
+	
+	@Transient
+	public String getPhotoImagePath() {
+		if (pathImage == null) return null;
+		return "/images/chef/"+pathImage;
 	}
 
 	public String getEmail() {

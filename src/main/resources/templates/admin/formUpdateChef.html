@@ -20,7 +20,7 @@
 	<h1>Dettagli ingrediente</h1>
 	<div th:if="${chef}">
 		<span th:text="${chef.name + ' ' +chef.surname}">Up!</span>
-		<span><img width="5%" th:src=${chef.pathImage} /></span>
+		<span><img width="5%" th:src=${chef.PhotoImagePath} /></span>
 	</div>
 	<div>
 			<a th:href="@{'/admin/removeChef' + '/' + ${chef.id}}">Elimina chef</a>

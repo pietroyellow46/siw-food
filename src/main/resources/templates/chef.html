@@ -23,7 +23,7 @@
 		<span th:text="${chef.surname}">Barbieri</span>
 		<span th:if="${chef.dateBirth!=null}" th:text="'(' + ${chef.dateBirth} + ')'">(2/10/2002)</span>
 		<span th:unless="${chef.dateBirth!=null}">(Data non presente)</span>
-		<span><img width="5%" th:src=${chef.pathImage} /></span>
+		<span><img width="5%" th:src=${chef.PhotoImagePath} /></span>
 	</div>
 	<br>
 	<div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette di questo chef</div>

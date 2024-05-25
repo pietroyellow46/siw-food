@@ -2,6 +2,8 @@
 <html> <head>
     <title>Aggiungi chef</title>
     <link rel="stylesheet" href="/css/stylesheet.css" />
+     <script src="/js/3.7.1_jquery.min.js"></script>
+    <script src="/js/thumbnail.js"></script>
   </head>
   <body>
 	  <header>
@@ -15,30 +17,41 @@
 	</header>
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Aggiungi uno chef</h1>
-    <form th:action="@{/admin/chef}" method="POST" th:object="${chef}">
+    <form th:action="@{/admin/chef}" method="POST" th:object="${chef}" enctype="multipart/form-data">
 		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
 	<div>
-        Nome: <span><input required type="text" th:field="${chef.name}"/></span>
-                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-
-      </div>
-      <div>
-        Cognome: <span><input required type="text" th:field="${chef.surname}"/></span>
-                         <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
-
-      </div>
-      <div>
+			<label>Nome</label>
+			<span><input type="text" required placeholder="name"  th:field="${chef.name}" /></span>
+			<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+		</div>
+		<div>
+			<label>Cognome</label>
+			<span><input type="text" required placeholder="surname"  th:field="${chef.surname}" /></span>
+			<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+		</div>
+		
+		    <div>
         Data di nascita: <span><input type="date" th:field="${chef.dateBirth}" min="1862-01-01" max="2025-12-31" /></span>
                                <span th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>
 
       </div>
-       <div>
-        Percorso immagine: <span><input type="text" th:field="${chef.pathImage}"/></span>
-                         <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
+		<div>
+			<label>Email</label>
+			<span><input type="email" placeholder="email" th:field="${chef.email}" /></span>
+		    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+			
+		</div>
+      </span>
+        <div>
+        Percorso immagine: <span><input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/></span>
 
       </div>
+      
+      <div>
+		  <img id="thumbnail" alt="logoPreview"/>
+	  </div>
       <br>
       <div>
         <span><button type="submit">Inserisci</button></span>

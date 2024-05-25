@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
+
+//doppioni su username
+//username e pwd not blank
 @Entity
 public class Credentials {
 
@@ -24,7 +27,7 @@ public class Credentials {
 	private String password;
 	private String role;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Chef user;
 	
 	public String getUsername() {

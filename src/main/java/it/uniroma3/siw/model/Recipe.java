@@ -4,28 +4,43 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
+
+//unicita su nome e chef
+//nome not blank
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Recipe {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String nome;
-	
-	private String pathImage;
-	
+
+	@Column(nullable = true)
+	private String mainImage;
+
+	@Column(nullable = true)
+	private String extraImage1;
+
+	@Column(nullable = true)
+	private String extraImage2;
+
+	@Column(nullable = true)
+	private String extraImage3;
+
 	@ManyToOne
 	private Chef chef;
-	
+
 	@OneToMany (mappedBy = "recipe", cascade = {CascadeType.REMOVE})
 	private List<UsedIngredient> usedIngredients;
 
@@ -53,14 +68,6 @@ public class Recipe {
 		this.nome = nome;
 	}
 
-	public String getPathImage() {
-		return pathImage;
-	}
-
-	public void setPathImage(String pathImage) {
-		this.pathImage = pathImage;
-	}
-
 	public Chef getChef() {
 		return chef;
 	}
@@ -68,6 +75,65 @@ public class Recipe {
 	public void setChef(Chef chef) {
 		this.chef = chef;
 	}
+
+
+
+	public String getMainImage() {
+		return mainImage;
+	}
+
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
+	}
+
+	public String getExtraImage1() {
+		return extraImage1;
+	}
+
+	public void setExtraImage1(String extraImage1) {
+		this.extraImage1 = extraImage1;
+	}
+
+	public String getExtraImage2() {
+		return extraImage2;
+	}
+
+	public void setExtraImage2(String extraImage2) {
+		this.extraImage2 = extraImage2;
+	}
+
+	public String getExtraImage3() {
+		return extraImage3;
+	}
+
+	public void setExtraImage3(String extraImage3) {
+		this.extraImage3 = extraImage3;
+	}
+	
+	@Transient
+	public String getMainImagePath() {
+		if (mainImage == null) return null;
+		return "/images/recipe/"+id+"/"+mainImage;
+	}
+	
+	@Transient
+	public String getExtraImagePath2() {
+		if (extraImage2 == null) return null;
+		return "/images/recipe/"+id+"/"+extraImage2;
+	}
+	
+	@Transient
+	public String getExtraImagePath1() {
+		if (extraImage1 == null) return null;
+		return "/images/recipe/"+id+"/"+extraImage1;
+	}
+	
+	@Transient
+	public String getExtraImagePath3() {
+		if (extraImage3 == null) return null;
+		return "/images/recipe/"+id+"/"+extraImage3;
+	}
+	
 
 	@Override
 	public int hashCode() {

@@ -20,7 +20,7 @@
 	<h1>Dettagli ingrediente</h1>
 	<div th:if="${ingredient}">
 		<span th:text="${ingredient.name}">Up!</span>
-		<span><img width="5%" th:src=${ingredient.pathImage} /></span>
+		<span><img width="5%" th:src=${ingredient.PhotoImagePath} /></span>
 	</div>
 	<div>
 			<a th:href="@{'/admin/removeIngredient' + '/' + ${ingredient.id}}">Elimina ingrediente</a>

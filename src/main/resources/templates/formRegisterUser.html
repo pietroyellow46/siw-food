@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-	<title>
-		SiwMovie - Registrazione
-	</title>
-	<link rel="stylesheet" href="/css/stylesheet.css" />
-</head>
-
-<body>
-<header>
+<html> <head>
+    <title>SiwFood - Registrazione</title>
+    <link rel="stylesheet" href="/css/stylesheet.css" />
+    <script src="/js/3.7.1_jquery.min.js"></script>
+    <script src="/js/thumbnail.js"></script>
+  </head>
+  <body>
+	  <header>
 		<div th:if="${userDetails}">
 			<span th:text="${userDetails.getUsername()}"></span>
 			<a href="/logout">Logout</a>
@@ -18,14 +15,10 @@
 			<a href="/login">Login</a>
 		</div>
 	</header>
-
-	<div>
-		<a href="/"><img src="/images/logo-siw.png" width="50%" /></a>
-	</div>
-	<h1>Registrazione nuovo utente</h1>
-	
-	<form th:action="@{/register}" method="POST" th:object="${credentials}">
-		      <div th:if="${#fields.hasGlobalErrors()}">
+    <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+    <h1>Registrazione nuovo utente</h1>
+    <form th:action="@{/register}" method="POST" th:object="${credentials}" enctype="multipart/form-data">
+		 <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
       </div>
 		<div>
@@ -58,22 +51,26 @@
                                <span th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>
 
       </div>
-       <div>
-        Percorso immagine: <span><input type="text" th:field="${chef.pathImage}"/></span>
-                         <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
-
-      </div>
 		<div>
 			<label>Email</label>
 			<span><input type="email" placeholder="email" th:field="${chef.email}" /></span>
 		    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
 			
 		</div>
-		</span>
-		<div>
-			<button type="submit">Registra</button>
-		</div>
-	</form>
-</body>
+      </span>
+        <div>
+        Percorso immagine: <span><input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/></span>
 
+      </div>
+      
+      <div>
+		  <img id="thumbnail" alt="logoPreview"/>
+	  </div>
+      <br>
+      <div>
+        <span><button type="submit">Inserisci</button></span>
+      </div>
+    </form>
+  </body>
 </html>
+

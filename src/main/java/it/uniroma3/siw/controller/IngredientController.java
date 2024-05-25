@@ -1,12 +1,5 @@
 package it.uniroma3.siw.controller;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeService;
@@ -33,82 +25,78 @@ public class IngredientController {
 	@Autowired
 	private RecipeService recipeService;
 
+	//lista ingredienti
 	@GetMapping("/ingredient")
 	public String getIngredients(Model model) {		
 		model.addAttribute("ingredients", this.ingredientService.findAll());
 		return "ingredients.html";
 	}
 
+	//ritorna dettagli di un ingrediente
 	@GetMapping("/ingredient/{id}")
 	public String getIngredient(@PathVariable("id") Long id, Model model) {
-
 		Ingredient ingredient = this.ingredientService.findById(id);
-		//ingredient.retrivePathImage();
 		model.addAttribute("ingredient", ingredient);
 		model.addAttribute("recipes", this.recipeService.findRecipeWithIngredient(id));
 		return "ingredient.html";
 	}
 
-	@GetMapping("chef/formNewIngredient")
+	//form per nuovo ingrediente
+	@GetMapping("admin/formNewIngredient")
 	public String formNewIngredient(Model model) {
 		model.addAttribute("ingredient", new Ingredient());
-		return "chef/formNewIngredient.html";
+		return "admin/formNewIngredient.html";
 	}
 
-	@PostMapping("chef/ingredient")
+	//post per nuovo ingrediente
+	@PostMapping("admin/ingredient")
 	public String newIngredient(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
 		// this.movieValidator.validate(movie, bindingResult);
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "chef/formNewIngredient.html";
 		} else {
-			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			this.ingredientService.save(ingredient);
-			System.out.println(multipartFile.isEmpty());
-			int lastDotIndex = fileName.lastIndexOf('.');
-			String estensione = fileName.substring(lastDotIndex + 1);
+			if (!multipartFile.isEmpty()) {
+				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				this.ingredientService.save(ingredient);
 
-			String newFileName = "ingredient"+ingredient.getId()+"."+estensione;
-			ingredient.setPathImage(newFileName);
-			this.ingredientService.save(ingredient);
+				String newFileName = "ingredient"+ingredient.getId()+"."+MvcConfig.getExtension(fileName);
+				ingredient.setPathImage(newFileName);
+				this.ingredientService.save(ingredient);
 
-			String uploadDir="./images/ingredient";
+				String uploadDir="./images/ingredient";
 
-			Path uploadPath = Paths.get(uploadDir);
-
-			if (!Files.exists(uploadPath)) {
-				Files.createDirectories(uploadPath);
+				MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
 			}
-
-			try(InputStream inputStream = multipartFile.getInputStream()){
-				Path filePath = uploadPath.resolve(newFileName);
-				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {
-				throw new IOException("Could not save upload file: " + fileName);
+			else {
+				this.ingredientService.save(ingredient);
 			}
-
 			model.addAttribute(ingredient);
 			return "redirect:/ingredient/"+ingredient.getId();
 		}
 	}
 
+	//form per ricerca ingrediente
 	@GetMapping("/searchIngredient")
 	public String searchIngredient(Model model) {
 		return "formSearchIngredient.html";
 	}
 
+	//raccoglie la post con il nome da cercare
 	@PostMapping("/searchIngredient")
 	public String foundIngredient(Model model, @RequestParam String name) {
 		model.addAttribute("ingredients", this.ingredientService.findByName(name));
 		return "foundIngredient.html";
 	}
 
+	//path da poter chiamare direttamente dalla barra del browser che cerca l'ingrediente (con underscore a posto degli spazi)
 	@GetMapping("/searchIngredient/{name}")
 	public String searchIngredient(@PathVariable("name") String name, Model model) {
 		String newName = name.replace("_", " ");
 		return foundIngredient(model, newName);
 	}
 
+	//rimuove l'ingrediente con l'id del path
 	@GetMapping("admin/removeIngredient/{ingredientId}")
 	public String removeIngredient(@PathVariable("ingredientId") Long ingredientId, Model model) {
 		Ingredient i = ingredientService.findById(ingredientId);
@@ -117,12 +105,14 @@ public class IngredientController {
 		return "redirect:/admin/manageIngredient";
 	}
 
+	//ritorna alla pagina per la gestione degli ingredienti
 	@GetMapping("admin/manageIngredient")
 	public String manageIngredient(Model model) {
 		model.addAttribute("ingredients", this.ingredientService.findAll());
 		return "admin/manageIngredient.html";
 	}
 
+	//ritorna la pagina per la modifica di un ingrediente dell'id del path
 	@GetMapping("admin/formUpdateIngredient/{id}")
 	public String formUpdateIngredient(@PathVariable("id") Long id, Model model) {
 		Ingredient i = this.ingredientService.findById(id);
@@ -131,48 +121,36 @@ public class IngredientController {
 		return "admin/formUpdateIngredient.html";
 	}
 
+	//form per modificare i dettagli dell'ingrediente con id del path
 	@GetMapping("admin/changeIngredient/{ingredientId}")
-	public String updateRecipe(@PathVariable("ingredientId") Long ingredientId, Model model) {
+	public String updateIngredient(@PathVariable("ingredientId") Long ingredientId, Model model) {
 		Ingredient ingredient = ingredientService.findById(ingredientId);
 		model.addAttribute("ingredient", ingredient);
 		model.addAttribute("ingredientId", ingredientId);
 		return "admin/formChangeIngredient.html";
 	}
 
+	//raccoglie i nuovi attributi per la modifica dell ingreidente
 	@PostMapping("admin/ingredient/{ingredientId}")
-	public String changeRecipe(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult, Model model,
+	public String changeIngredient(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult, Model model,
 			@PathVariable("ingredientId") Long ingredientId,@RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
 		Ingredient oldIngredient = ingredientService.findById(ingredientId);
 		ingredient.setId(ingredientId);
-		ingredient.setUsedIngredients(oldIngredient.getUsedIngredients());		
-		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		this.ingredientService.save(ingredient);
+		ingredient.setUsedIngredients(oldIngredient.getUsedIngredients());
+		ingredient.setPathImage(oldIngredient.getPathImage());
 
-		int lastDotIndex = fileName.lastIndexOf('.');
-		String estensione = fileName.substring(lastDotIndex + 1);
+		//se vuoto lasci la vecchia foto
+		if (!multipartFile.isEmpty()) {
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-		String newFileName = "ingredient"+ingredient.getId()+"."+estensione;
-		ingredient.setPathImage(newFileName);
-		this.ingredientService.save(ingredient);
+			String newFileName = "ingredient"+ingredient.getId()+"."+MvcConfig.getExtension(fileName);
+			ingredient.setPathImage(newFileName);
 
-		String uploadDir="./images/ingredient";
+			String uploadDir="./images/ingredient";
 
-		Path uploadPath = Paths.get(uploadDir);
-
-		if (!Files.exists(uploadPath)) {
-			Files.createDirectories(uploadPath);
+			MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
 		}
-
-		try(InputStream inputStream = multipartFile.getInputStream()){
-			Path filePath = uploadPath.resolve(newFileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new IOException("Could not save upload file: " + fileName);
-		}
-		
-		
+		this.ingredientService.save(ingredient);
 		return "redirect:/admin/formUpdateIngredient/"+ingredientId;
 	}
-
-
 }
