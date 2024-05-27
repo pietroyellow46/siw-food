@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeService;
+import it.uniroma3.siw.validator.IngredientValidator;
 import jakarta.validation.Valid;
 
 /*object-fit*/
@@ -22,8 +23,12 @@ public class IngredientController {
 
 	@Autowired
 	private IngredientService ingredientService;
+
 	@Autowired
 	private RecipeService recipeService;
+
+	@Autowired
+	private IngredientValidator ingredientValidator;
 
 	//lista ingredienti
 	@GetMapping("/ingredient")
@@ -52,9 +57,9 @@ public class IngredientController {
 	@PostMapping("admin/ingredient")
 	public String newIngredient(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
-		// this.movieValidator.validate(movie, bindingResult);
+		this.ingredientValidator.validate(ingredient, bindingResult);
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
-			return "chef/formNewIngredient.html";
+			return "admin/formNewIngredient.html";
 		} else {
 			if (!multipartFile.isEmpty()) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -139,18 +144,23 @@ public class IngredientController {
 		ingredient.setUsedIngredients(oldIngredient.getUsedIngredients());
 		ingredient.setPathImage(oldIngredient.getPathImage());
 
-		//se vuoto lasci la vecchia foto
-		if (!multipartFile.isEmpty()) {
-			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-			String newFileName = "ingredient"+ingredient.getId()+"."+MvcConfig.getExtension(fileName);
-			ingredient.setPathImage(newFileName);
-
-			String uploadDir="./images/ingredient";
-
-			MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
+		this.ingredientValidator.validate(ingredient, bindingResult);
+		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
+			return "redirect:/admin/changeIngredient/"+ingredientId+"?error=true";
 		}
-		this.ingredientService.save(ingredient);
-		return "redirect:/admin/formUpdateIngredient/"+ingredientId;
+		else {
+			if (!multipartFile.isEmpty()) { //se vuoto lasci la vecchia foto
+				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+				String newFileName = "ingredient"+ingredient.getId()+"."+MvcConfig.getExtension(fileName);
+				ingredient.setPathImage(newFileName);
+
+				String uploadDir="./images/ingredient";
+
+				MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
+			}
+			this.ingredientService.save(ingredient);
+			return "redirect:/admin/formUpdateIngredient/"+ingredientId;
+		}
 	}
 }

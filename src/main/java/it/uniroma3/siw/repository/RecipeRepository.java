@@ -25,4 +25,6 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 	//ritorna true/false se la ricetta di id passato è dello chef di id passato
 	@Query(value = "SELECT EXISTS (SELECT 1 FROM recipe WHERE chef_id = :idChef AND id = :idRecipe) AS ricetta_presente", nativeQuery = true)
 	public boolean isRecipeofChef(@Param("idRecipe") Long idRecipe,@Param("idChef") Long idChef);
+
+	public boolean existsByNomeAndChef(String nome, Chef chef);
 }

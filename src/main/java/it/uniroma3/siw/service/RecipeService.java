@@ -56,4 +56,8 @@ public class RecipeService {
 	public boolean isRecipeofChef(Long idRecipe, Long idChef) {
 		return this.recipeRepository.isRecipeofChef(idRecipe, idChef);
 	}
+	
+	public boolean existsByNomeAndChef(String nome, Chef chef) {
+		return this.recipeRepository.existsByNomeAndChef(nome, chef);
+	}
 }

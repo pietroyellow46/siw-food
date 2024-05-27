@@ -101,34 +101,40 @@ public class ChefController {
 	public String changeChef(@Valid @ModelAttribute("chef") Chef chef,BindingResult bindingResult, Model model,
 			@PathVariable("chefId") Long chefId, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
 
-		Chef oldChef = chefService.findById(chefId);
-		chef.setId(chefId);
-		chef.setRecipes(oldChef.getRecipes());
-		chef.setPathImage(oldChef.getPathImage());
+		if (!bindingResult.hasErrors()) {
 
-		//se non ho passato nulla lascio la vecchia foto
-		if (!multipartFile.isEmpty()) {
-			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			Chef oldChef = chefService.findById(chefId);
+			chef.setId(chefId);
+			chef.setRecipes(oldChef.getRecipes());
+			chef.setPathImage(oldChef.getPathImage());
 
-			String newFileName = "chef"+chef.getId()+"."+MvcConfig.getExtension(fileName);
-			chef.setPathImage(newFileName);
+			//se non ho passato nulla lascio la vecchia foto
+			if (!multipartFile.isEmpty()) {
+				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-			String uploadDir="./images/chef";
+				String newFileName = "chef"+chef.getId()+"."+MvcConfig.getExtension(fileName);
+				chef.setPathImage(newFileName);
 
-			MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
+				String uploadDir="./images/chef";
+
+				MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
+			}
+
+			this.chefService.save(chef);
+			return "redirect:/admin/formUpdateChef/"+chefId;
 		}
-
-		this.chefService.save(chef);
-		return "redirect:/admin/formUpdateChef/"+chefId;
+		else {
+			return "redirect:/admin/changeChef/"+chefId+"?error=true";
+		}
 	}
-	
+
 	@GetMapping("admin/formNewChef")
 	public String formNewChef(Model model) {
 		model.addAttribute("chef", new Chef());
 		return "admin/formNewChef.html";
 	}
-	
-	
+
+
 	@PostMapping("admin/chef")
 	public String newChef(@Valid @ModelAttribute("chef") Chef chef,BindingResult bindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
@@ -136,7 +142,7 @@ public class ChefController {
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "admin/formNewChef.html";
 		} else {
-			
+
 			if (!multipartFile.isEmpty()) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				this.chefService.save(chef);

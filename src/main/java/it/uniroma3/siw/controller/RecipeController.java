@@ -24,6 +24,7 @@ import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeService;
 import it.uniroma3.siw.service.UsedIngredientService;
+import it.uniroma3.siw.validator.RecipeValidator;
 import jakarta.validation.Valid;
 
 @Controller
@@ -43,6 +44,9 @@ public class RecipeController {
 
 	@Autowired
 	private UsedIngredientService usedIngredientService;
+
+	@Autowired
+	private RecipeValidator recipeValidator;
 
 
 	//pagina con lista ricette
@@ -70,17 +74,20 @@ public class RecipeController {
 	@PostMapping("chef/recipe")
 	public String newRecipe(@Valid @ModelAttribute("recipe") Recipe recipe,BindingResult bindingResult, Model model,
 			@RequestParam("primaryImage") MultipartFile mainMultipartFile, @RequestParam("extraImage") MultipartFile[] extraMultipartFiles) throws IOException {
-		// this.movieValidator.validate(movie, bindingResult);
+
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+		if (!credentials.getRole().equals(Credentials.ADMIN_ROLE)) { 	//se non è admin setti chef della ricetta a chef loggato
+			Chef chef = credentials.getUser();							//se chi inserisce la ricetta è admin allora la crea senza chef
+			recipe.setChef(chef);
+		}
+
+		this.recipeValidator.validate(recipe, bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.err.println(bindingResult.getAllErrors().toString());// sono emersi errori nel binding​
 			return "chef/formNewRecipe.html";
-		} else {
-			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-			if (!credentials.getRole().equals(Credentials.ADMIN_ROLE)) { 	//se non è admin setti chef della ricetta a chef loggato
-				Chef chef = credentials.getUser();							//se chi inserisce la ricetta è admin allora la crea senza chef
-				recipe.setChef(chef);
-			}
+		}
+		else {
 
 			this.recipeService.save(recipe);
 			String uploadDir = "./images/recipe/"+recipe.getId();
@@ -118,6 +125,7 @@ public class RecipeController {
 			return "redirect:/recipe/"+recipe.getId();
 		}
 	}
+
 
 	//pagina con form per cercare una ricetta
 	@GetMapping("/searchRecipe")
@@ -198,6 +206,9 @@ public class RecipeController {
 	public String setChefToRecipe(@PathVariable("idChef") Long idChef,@PathVariable("idRecipe") Long idRecipe) {
 		Recipe recipe = recipeService.findById(idRecipe);
 		recipe.setChef(this.chefService.findById(idChef));
+		
+		if (recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef()))
+			return "redirect:/admin/addChef/"+idRecipe+"?error=true";
 		this.recipeService.save(recipe);
 		return "redirect:/chef/formUpdateRecipe/"+idRecipe;
 	}
@@ -323,45 +334,49 @@ public class RecipeController {
 			recipe.setId(recipeId);
 			recipe.setChef(oldRecipe.getChef());
 			recipe.setUsedIngredients(oldRecipe.getUsedIngredients());
+			
+			this.recipeValidator.validate(recipe, bindingResult);
+			if (bindingResult.hasErrors()) {
+				return "redirect:/chef/updateRecipe/"+recipeId+"?error=true";
+			}else {
 
+				String uploadDir = "./images/recipe/"+recipe.getId();
 
-			String uploadDir = "./images/recipe/"+recipe.getId();
+				if (!mainMultipartFile.isEmpty()) {
+					String mainImageName = StringUtils.cleanPath(mainMultipartFile.getOriginalFilename());
+					String newMainFileName = recipe.getId()+"Main."+MvcConfig.getExtension(mainImageName);
+					recipe.setMainImage(newMainFileName);
+					MvcConfig.saveUploadFile(uploadDir, mainMultipartFile, newMainFileName);
+				} else
+					recipe.setMainImage(oldRecipe.getMainImage());
 
-			if (!mainMultipartFile.isEmpty()) {
-				String mainImageName = StringUtils.cleanPath(mainMultipartFile.getOriginalFilename());
-				String newMainFileName = recipe.getId()+"Main."+MvcConfig.getExtension(mainImageName);
-				recipe.setMainImage(newMainFileName);
-				MvcConfig.saveUploadFile(uploadDir, mainMultipartFile, newMainFileName);
-			} else
-				recipe.setMainImage(oldRecipe.getMainImage());
+				if (!extraMultipartFiles[0].isEmpty()) {
+					String extraImageName1 = StringUtils.cleanPath(extraMultipartFiles[0].getOriginalFilename());
+					String newExtraImage1 = recipe.getId()+"Extra1."+MvcConfig.getExtension(extraImageName1);
+					recipe.setExtraImage1(newExtraImage1);
+					MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[0], newExtraImage1);
+				} else
+					recipe.setExtraImage1(oldRecipe.getExtraImage1());
 
-			if (!extraMultipartFiles[0].isEmpty()) {
-				String extraImageName1 = StringUtils.cleanPath(extraMultipartFiles[0].getOriginalFilename());
-				String newExtraImage1 = recipe.getId()+"Extra1."+MvcConfig.getExtension(extraImageName1);
-				recipe.setExtraImage1(newExtraImage1);
-				MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[0], newExtraImage1);
-			} else
-				recipe.setExtraImage1(oldRecipe.getExtraImage1());
+				if (!extraMultipartFiles[1].isEmpty()) {
+					String extraImageName2 = StringUtils.cleanPath(extraMultipartFiles[1].getOriginalFilename());
+					String newExtraImage2 = recipe.getId()+"Extra2."+MvcConfig.getExtension(extraImageName2);
+					recipe.setExtraImage2(newExtraImage2);
+					MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[1], newExtraImage2);
+				} else
+					recipe.setExtraImage2(oldRecipe.getExtraImage2());
 
-			if (!extraMultipartFiles[1].isEmpty()) {
-				String extraImageName2 = StringUtils.cleanPath(extraMultipartFiles[1].getOriginalFilename());
-				String newExtraImage2 = recipe.getId()+"Extra2."+MvcConfig.getExtension(extraImageName2);
-				recipe.setExtraImage2(newExtraImage2);
-				MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[1], newExtraImage2);
-			} else
-				recipe.setExtraImage2(oldRecipe.getExtraImage2());
-
-			if (!extraMultipartFiles[2].isEmpty()) {
-				String extraImageName3 = StringUtils.cleanPath(extraMultipartFiles[2].getOriginalFilename());
-				String newExtraImage3 = recipe.getId()+"Extra3."+MvcConfig.getExtension(extraImageName3);
-				recipe.setExtraImage3(newExtraImage3);
-				MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[2], newExtraImage3);
-			} else
-				recipe.setExtraImage3(oldRecipe.getExtraImage3());
-
-
-			recipeService.save(recipe);
-			return "redirect:/chef/formUpdateRecipe/"+recipeId;
+				if (!extraMultipartFiles[2].isEmpty()) {
+					String extraImageName3 = StringUtils.cleanPath(extraMultipartFiles[2].getOriginalFilename());
+					String newExtraImage3 = recipe.getId()+"Extra3."+MvcConfig.getExtension(extraImageName3);
+					recipe.setExtraImage3(newExtraImage3);
+					MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[2], newExtraImage3);
+				} else
+					recipe.setExtraImage3(oldRecipe.getExtraImage3());
+								
+				this.recipeService.save(recipe);
+				return "redirect:/chef/formUpdateRecipe/"+recipeId;
+			}
 		}
 		else {
 			return "error.html";

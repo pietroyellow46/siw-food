@@ -40,4 +40,8 @@ public class IngredientService {
 	public void deleteIngredient(Ingredient ingredient) {
 		this.ingredientRepository.delete(ingredient);
 	}
+
+	public boolean existsByName(String name) {
+		return this.ingredientRepository.existsByName(name);
+	}
 }

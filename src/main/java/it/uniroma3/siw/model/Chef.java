@@ -14,9 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PreRemove;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 
-//name surname not blank
-//email formato email
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Chef {
@@ -25,12 +26,16 @@ public class Chef {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotBlank
 	private String name;
 
+	@NotBlank
 	private String surname;
 
+	@Email
 	private String email;
 
+	@Past
 	private LocalDate dateBirth;
 
 	@Column(nullable = true)

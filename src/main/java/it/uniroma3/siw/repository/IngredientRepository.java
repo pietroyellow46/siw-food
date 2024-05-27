@@ -15,4 +15,6 @@ public interface IngredientRepository extends CrudRepository<Ingredient, Long> {
 
 	//ritorna ingredienti con nome che contiene stringa passata
 	public List<Ingredient> findByNameContaining(String name);	
+	
+	public boolean existsByName(String name);
 }

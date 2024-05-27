@@ -18,12 +18,11 @@
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Modifica ricetta</h1>
     <form th:action="@{'/chef/recipe/'+ ${recipeId}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
-		 <div th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
-      </div>
+		 <div>
+				<span th:if="${param.error != null}">Dati inseriti non accettabili</span>
+			</div>
 	<div>
         Nome: <span><input required type="text" th:field="${recipe.nome}"/></span>
-                         <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
 
       </div>
  

@@ -18,18 +18,16 @@
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Modifica ingrediente</h1>
     <form th:action="@{'/admin/ingredient/'+ ${ingredientId}}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
-		 <div th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
-      </div>
+		 <div>
+				<span th:if="${param.error != null}">Dati inseriti non accettabili</span>
+			</div>
 	<div>
         Nome: <span><input required type="text" th:field="${ingredient.name}"/></span>
-                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
       </div>
  
        <div>
         Percorso immagine: <span><input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/></span>
-                         <span th:if="${#fields.hasErrors('pathImage')}" th:errors="*{pathImage}"></span>
 
       </div>
        

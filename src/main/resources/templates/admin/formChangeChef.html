@@ -18,30 +18,25 @@
     <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Modifica chef</h1>
     <form th:action="@{'/admin/chef/'+ ${chefId}}" method="POST" th:object="${chef}" enctype="multipart/form-data">
-		 <div th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
-      </div>
+		<div>
+				<span th:if="${param.error != null}">Dati inseriti non accettabili</span>
+			</div>
 		<div>
 			<label>Nome</label>
 			<span><input type="text" required placeholder="name"  th:field="${chef.name}" /></span>
-			<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 		</div>
 		<div>
 			<label>Cognome</label>
 			<span><input type="text" required placeholder="surname"  th:field="${chef.surname}" /></span>
-			<span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
 		</div>
 		
 		    <div>
         Data di nascita: <span><input type="date" th:field="${chef.dateBirth}" min="1862-01-01" max="2025-12-31" /></span>
-                               <span th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>
 
       </div>
 		<div>
 			<label>Email</label>
-			<span><input type="email" placeholder="email" th:field="${chef.email}" /></span>
-		    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-			
+			<span><input type="email" placeholder="email" th:field="${chef.email}" /></span>			
 		</div>
       </span>
         <div>

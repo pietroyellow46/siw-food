@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 //doppioni su username
@@ -20,11 +21,15 @@ public class Credentials {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+	
 	@Column(unique = true)
 	@NotBlank
 	private String username;
+	
 	@NotBlank
+	@Size(min = 6, message = "daje")
 	private String password;
+	
 	private String role;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
