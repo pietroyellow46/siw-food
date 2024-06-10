@@ -18,17 +18,25 @@ insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 
 insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Cipolla', 'ingredient401.jpg');
 insert into ingredient (id, name, path_image) values(nextval('ingredient_seq'), 'Riso Arborio', 'ingredient451.jpg');
 
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Pizza Margherita', 1,'/images/recipe/margherita.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Spaghetti alla Carbonara',251, '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Risotto alla Milanese',51, '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Ravioli di Ricotta e Spinaci', '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Lasagne alla Bolognese', 301,'/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Ossobuco alla Milanese', 351, '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Tiramisù', 101, '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Pesto alla Genovese', '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Caprese Salad',151, '/images/logo-siw.png', null, null, null);
-insert into recipe (id, nome, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Risotto ai Frutti di Mare', '/images/logo-siw.png', null, null, null);
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Pizza Margherita', 'Una pizza classica italiana con salsa di pomodoro, mozzarella fresca, e foglie di basilico, cotta nel forno a legna. Creata in onore della Regina Margherita, rappresenta i colori della bandiera italiana.', 1, '1Main.jpg', null, null, null);
 
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Spaghetti alla Carbonara', 'Un piatto di pasta cremoso preparato con uova, pecorino romano, guanciale croccante e pepe nero macinato fresco. Originaria del Lazio, è una delle ricette più amate e discusse, con numerose varianti e segreti tramandati.', 251, '51Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Risotto alla Milanese', 'Un risotto cremoso tipico di Milano, aromatizzato con zafferano e parmigiano reggiano, servito al dente. Simbolo della cucina milanese, spesso accompagnato da ossobuco, rappresenta la tradizione culinaria lombarda.', 51, '101Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Ravioli di Ricotta e Spinaci', 'Deliziosi ravioli ripieni di ricotta fresca e spinaci, serviti con salsa di burro e salvia o pomodoro. Piatti tipici delle festività italiane, i ravioli variano di ripieno e salsa a seconda delle regioni.', '151Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Lasagne alla Bolognese', 'Strati di pasta all uovo, ragù alla bolognese e besciamella, cotti al forno fino a ottenere una crosticina dorata. Un piatto iconico della cucina emiliana, noto per la sua ricchezza e complessità di sapori.', 301, '201Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Ossobuco alla Milanese', 'Stinco di vitello tenero brasato con verdure, vino bianco e brodo, servito con gremolata e risotto alla milanese. Questo piatto tradizionale è un omaggio alla cucina milanese, noto per la sua delicatezza e sapore intenso.', 351, '251Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Tiramisù', 'Un dessert italiano classico a base di strati di savoiardi imbevuti di caffè e crema di mascarpone, spolverato con cacao amaro. Originario del Veneto, il tiramisù è diventato un simbolo della pasticceria italiana in tutto il mondo.', 101, '301Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Pesto alla Genovese', 'Una salsa saporita fatta con basilico fresco, pinoli, parmigiano, aglio e olio extravergine di oliva, ideale per condire la pasta. Emblema della cucina ligure, il pesto è apprezzato per la sua freschezza e semplicità.', '351Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, chef_id, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Caprese Salad', 'Una semplice e rinfrescante insalata italiana preparata con pomodori freschi, mozzarella di bufala, basilico e olio di oliva. Nata a Capri, questa insalata è un simbolo dell estate italiana e della cucina mediterranea.', 151, '401Main.jpg', null, null, null);
+
+insert into recipe (id, nome, description, main_image, extra_image1, extra_image2, extra_image3) values(nextval('recipe_seq'), 'Risotto ai Frutti di Mare', 'Un delizioso risotto ai frutti di mare, preparato con una varietà di pesce fresco e crostacei, cotto alla perfezione. Tipico delle regioni costiere italiane, questo risotto è un piatto estivo perfetto per gli amanti del mare.', '451Main.jpg', null, null, null);
 
 insert into used_ingredient (id, ingredient_id, recipe_id, quantity, measurement) values(nextval('used_ingredient_seq'), 1, 1, 200, 'grammi');
 insert into used_ingredient (id, ingredient_id, recipe_id, quantity, measurement) values(nextval('used_ingredient_seq'), 1, 151, 300, 'grammi');

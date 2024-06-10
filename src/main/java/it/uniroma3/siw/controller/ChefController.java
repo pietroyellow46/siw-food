@@ -25,6 +25,12 @@ public class ChefController {
 
 	@Autowired
 	private RecipeService recipeService;
+	
+	@GetMapping("/homepage")
+	public String homepage(Model model) {	
+		model.addAttribute("recipes",this.recipeService.findAll());
+		return "homepage.html";
+	}
 
 	//ritorna lista tutti chef non admin
 	@GetMapping("/allChef")

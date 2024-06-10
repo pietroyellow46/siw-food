@@ -47,6 +47,7 @@ public class AuthenticationController {
 		return "formLogin.html";
 	}
 
+
 	//ritorna a index se non loggato, indexChef se sei loggato non admin, indexAdmin se sei admin
 	@GetMapping("/") 
 	public String index(Model model) {

@@ -30,6 +30,8 @@ public class Recipe {
 
 	@NotBlank
 	private String nome;
+	
+	private String description;
 
 	@Column(nullable = true)
 	private String mainImage;
@@ -64,6 +66,15 @@ public class Recipe {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 
 	public String getNome() {
 		return nome;

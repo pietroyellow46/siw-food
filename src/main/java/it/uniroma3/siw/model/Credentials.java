@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 
 //doppioni su username
@@ -27,7 +26,6 @@ public class Credentials {
 	private String username;
 	
 	@NotBlank
-	@Size(min = 6, message = "daje")
 	private String password;
 	
 	private String role;
