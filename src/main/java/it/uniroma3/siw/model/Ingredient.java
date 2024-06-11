@@ -25,6 +25,8 @@ public class Ingredient {
 	@Column(unique = true)
 	@NotBlank
 	private String name;
+	
+	private String description;
 
 	@Column(nullable = true)
 	private String pathImage;
@@ -68,6 +70,14 @@ public class Ingredient {
 	public String getPhotoImagePath() {
 		if (pathImage == null) return null;
 		return "/images/ingredient/"+pathImage;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

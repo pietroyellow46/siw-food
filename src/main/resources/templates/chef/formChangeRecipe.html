@@ -1,59 +1,86 @@
 <!DOCTYPE html>
 <html> <head>
     <title th:text="${recipe.nome}">Risotto alla milanese</title>
-    <link rel="stylesheet" href="/css/stylesheet.css" />
-     <script src="/js/3.7.1_jquery.min.js"></script>
+ 	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<link rel="stylesheet" href="/css/formStyle.css">
+  	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  	<script src="/js/3.7.1_jquery.min.js"></script>
     <script src="/js/thumbnail.js"></script>
   </head>
+  
+  
   <body>
-	  <header>
-		<div th:if="${userDetails}">
-			<span th:text="${userDetails.getUsername()}"></span>
-			<a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${userDetails}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
-    <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-    <h1>Modifica ricetta</h1>
-    <form th:action="@{'/chef/recipe/'+ ${recipeId}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
-		 <div>
-				<span th:if="${param.error != null}">Dati inseriti non accettabili</span>
-			</div>
-	<div>
-        Nome: <span><input required type="text" th:field="${recipe.nome}"/></span>
-
-      </div>
- 
-       
-       <div>
-        Percorso immagine main: <input type="file" name="primaryImage" id="primaryImage" accept="image/png, image/jpeg"/>
-         <div>
-		  <img id="thumbnail" alt="logoPreview"/>
-	  </div>
-
-      </div>
+    <div class="wrapper">
+    	<form th:action="@{'/chef/recipe/'+ ${recipeId}}" method="POST" th:object="${recipe}" enctype="multipart/form-data">
+      	<h1>Aggiungi ricetta</h1>
       
-      <div>Percorso immagine extra1: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
-      	   <div>
-		  <img id="thumbnail0" alt="logoPreview"/>
-	  </div>
-      </div>
-      <div>Percorso immagine extra2: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
-         <div>
-		  <img id="thumbnail1" alt="logoPreview"/>
-	  </div>
-      </div>
-      <div>Percorso immagine extra3: <input type="file" name="extraImage" accept="image/png, image/jpeg"/>
-         <div>
-		  <img id="thumbnail2" alt="logoPreview"/>
-	  </div>
-      </div>
-      <br>
-      <div>
-        <span><button type="submit">Modifica</button></span>
-      </div>
+      	<!-- Errori globali -->
+      	<div class="error-message" th:if="${param.error != null}">
+			<span class="error-message" >Dati inseriti non accettabili</span> 
+	  	</div>
+	  
+	   	<!-- Field nome -->
+      	<div class="input-box">
+        	<input type="text" placeholder="Nome" th:field="${recipe.nome}"/> <!-- required -->
+        	<i class='bx bxs-pizza bx-tada' ></i>
+      	</div>
+      	
+      	
+      	<!-- Field descrizione -->
+      	<div class="input-box">
+			<textarea th:field="${recipe.description}" placeholder="Descrizione" class='scroll'></textarea>
+        	<i id="iconArea" class='bx bxs-cheese bx-tada' ></i>
+      	</div>	
+     
+     	<br>
+  		
+  		<div>
+			  <input type="file" name="primaryImage" id="primaryImage" accept="image/png, image/jpeg"/>
+		</div>
+		  
+		<div>
+		  <img id="thumbnail" alt="logoPreview" width="90%"/>
+	  	</div>
+	  	
+	  		<br>
+	  	
+	  	
+	  	<div>
+			  <input type="file" name="extraImage" accept="image/png, image/jpeg" class="fileImageExtra"/>
+		</div>
+		  
+		<div>
+		 <img id="thumbnail0" alt="logoPreview" width="90%"/>
+	  	</div>
+	  	
+	  		<br>
+	  	
+	  	<div>
+			  <input type="file" name="extraImage" accept="image/png, image/jpeg" class="fileImageExtra" />
+		</div>
+		  
+		<div>
+		 <img id="thumbnail1" alt="logoPreview" width="90%"/>
+	  	</div>
+	  	
+	  	
+	  		<br>
+	  	
+	  	<div>
+			  <input type="file" name="extraImage" accept="image/png, image/jpeg" class="fileImageExtra"/>
+		</div>
+		  
+		<div>
+		 <img id="thumbnail2" alt="logoPreview" width="90%"/>
+	  	</div>
+	  	
+	  		<br>
+	  	
+	  	
+	   	<br>
+      <button type="submit" class="btn">Modifica</button>
     </form>
+  </div>    
   </body>
 </html>

@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html> <head>
     <title>Modifica ingrediente</title>
-    <link rel="stylesheet" href="/css/stylesheet.css" />
+   <meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<link rel="stylesheet" href="/css/formStyle.css">
+  	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
      <script src="/js/3.7.1_jquery.min.js"></script>
     <script src="/js/thumbnail.js"></script>
   </head>
+  
   <body>
-	  <header>
-		<div th:if="${userDetails}">
-			<span th:text="${userDetails.getUsername()}"></span>
-			<a href="/logout">Logout</a>
+	<div class="wrapper">
+    	<form th:action="@{'/admin/ingredient/'+ ${ingredientId}}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
+      	<h1>Modifica ingrediente</h1>
+      
+      <!-- Errori globali -->
+      	<div class="error-message" th:if="${param.error != null}">
+			<span class="error-message" >Dati inseriti non accettabili</span> 
+	  	</div>
+	  
+	   	<!-- Field nome -->
+      	<div class="input-box">
+        	<input type="text" placeholder="Nome" th:field="${ingredient.name}" /> <!-- required -->
+        	<i class='bx bxs-cheese bx-tada' ></i>
+      	</div> 
+      	
+      	<!-- Field descrizione -->
+      	<div class="input-box">
+			<textarea th:field="${ingredient.description}" placeholder="Descrizione" class='scroll'></textarea>
+        	<i id="iconArea" class='bx bxs-cheese bx-tada' ></i>
+      	</div>	
+      	
+      	
+      	<br>		
+  		
+  		<div>
+			 <input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/>
 		</div>
-		<div th:unless="${userDetails}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
-    <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-    <h1>Modifica ingrediente</h1>
-    <form th:action="@{'/admin/ingredient/'+ ${ingredientId}}" method="POST" th:object="${ingredient}" enctype="multipart/form-data">
-		 <div>
-				<span th:if="${param.error != null}">Dati inseriti non accettabili</span>
-			</div>
-	<div>
-        Nome: <span><input required type="text" th:field="${ingredient.name}"/></span>
-
-      </div>
- 
-       <div>
-        Percorso immagine: <span><input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg"/></span>
-
-      </div>
-       
-      <div>
-		  <img id="thumbnail" alt="logoPreview"/>
-	  </div>
-      <br>
-      <div>
-        <span><button type="submit">Modifica</button></span>
-      </div>
+		  
+		<div>
+		  <img id="thumbnail" alt="logoPreview" width="90%"/>
+	  	</div>
+	   	<br>
+      <button type="submit" class="btn">Modifica</button>
     </form>
-  </body>
+  </div>
+</body>
 </html>

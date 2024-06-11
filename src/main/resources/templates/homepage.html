@@ -16,7 +16,7 @@
         	<ul class='nav-bar'>
 				
 				<!-- logo -->
-            	<li class='logo'><a href=''><img src='./images/logowhite.png'/></a></li>
+            	<li class='logo'><a href='/'><img src='./images/logowhite.png'/></a></li>
             	
             	<!-- menu navbar -->
             	<span class="navmenu">
@@ -24,8 +24,8 @@
 					<!-- barraRicerca -->
                 	<div class="search-container">
                   		<li>
-    						<form action="/" method="POST" class="barra-ricerca">
-       							<input type="text" placeholder="Ricerca..." name="q" autocomplete="off">
+    						<form th:action="@{/searchRecipe}" method="post" class="barra-ricerca">
+       							<input required type="text" placeholder="Ricetta" th:value="${nome}" name="nome" autocomplete="off"/>
         						<button type="submit"><i class='bx bx-search'></i></button>
     						</form>
 						</li>
@@ -60,9 +60,10 @@
 				<input type="checkbox" id="menu1" class="menu-toggle">
 				<label for="menu1">Operazioni sugli ingredienti</label>
 				<ul class="menu-content">
+					<li><a href="/ingredient">Visualizza ingredienti</a></li>
 					<li><a href="#">Aggiungi ingrediente</a></li>
 					<li><a href="#">Modifica ingrediente</a></li>
-					<li><a href="#">Cerca ingrediente</a></li>
+					<li><a href="/searchIngredient">Cerca ingrediente</a></li>
 				</ul>
 			</div>
 		
@@ -71,9 +72,10 @@
 				<input type="checkbox" id="menu2" class="menu-toggle">
 				<label for="menu2">Operazioni sugli chef</label>
 				<ul class="menu-content">
+					<li><a href="/allChef">Visualizza chef</a></li>
 					<li><a href="#">Aggiungi chef</a></li>
 					<li><a href="#">Modifica chef</a></li>
-					<li><a href="#">Cerca chef</a></li>
+					<li><a href="/searchChef">Cerca chef</a></li>
 				</ul>
 			</div>
 		
@@ -82,9 +84,10 @@
 				<input type="checkbox" id="menu3" class="menu-toggle">
 				<label for="menu3">Operazioni sulle ricette</label>
 				<ul class="menu-content">
+					<li><a href="/recipe">Visualizza ricette</a></li>
 					<li><a href="#">Aggiungi ricetta</a></li>
 					<li><a href="#">Modifica ricetta</a></li>
-					<li><a href="#">Cerca ricetta</a></li>
+					<li><a href="/searchRecipe">Cerca ricetta</a></li>
 				</ul>
 			</div>
 		</aside>

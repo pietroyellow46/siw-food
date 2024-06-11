@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html>
- <head>
-  <title>Cerca chef</title>
-  <link rel="stylesheet" href="/css/stylesheet.css" />
- </head>
-
- <body>
-	 <header>
-		<div th:if="${userDetails}">
-			<span th:text="${userDetails.getUsername()}"></span>
-			<a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${userDetails}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
-  <div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-  <h1>Cerca chef per nome o cognome</h1>
-  <form th:action="@{/searchChef}" method="post">
-   <div>Nome o cognome: <input required type="text" th:value="${nameSurname}" name="nameSurname" />
-   </div>
-      <br>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>Cerca chef </title>
+  	<link rel="stylesheet" href="css/formStyle.css">
+  	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
 
-        <span><button type="submit">Cerca</button></span>
-  </form>
- </body>
+<body>
+ 	<div class="wrapper">
+		 
+    	<form th:action="@{/searchChef}" method="POST">
 
+      	<h1>Cerca chef</h1>
+      	
+      	<div class="input-box">
+        	<input required type="text" placeholder="Chef" th:value="${nameSurname}" name="nameSurname" />
+        	<i class='bx bx-fork bx-tada' ></i>
+      	</div>
+    
+      	<button type="submit" class="btn">Cerca</button>
+  
+    </form>
+  </div>
+</body>
 </html>
