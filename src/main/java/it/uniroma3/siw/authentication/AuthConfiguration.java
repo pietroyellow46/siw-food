@@ -44,7 +44,7 @@ public class AuthConfiguration {
 		// .requestMatchers("/**").permitAll()
 
 		//cosa accede chi non loggato
-		.requestMatchers(HttpMethod.GET,"/","static/images/logowhite.png","static/images/logoblack.png","static/images/logofull.png","/static/images/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.png","/static/images/search1.png","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "homepage").permitAll()
+		.requestMatchers(HttpMethod.GET,"/","static/images/logowhite.png","static/images/logoblack.png","static/images/logofull.png","/static/images/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.png","/static/images/search1.png","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "homepage", "/login").permitAll()
 		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchRecipe","/searchIngredient", "/searchChef").permitAll()
 
 		//cosa accede chi loggato o admin o chef normale

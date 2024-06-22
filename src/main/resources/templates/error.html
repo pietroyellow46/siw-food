@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Errore inaspettato</title>
-   </head>
-   <body>
-      <div>
-         <h1>Le nostre scuse, Siw-Food ha avuto un problema.</h1>
-         <p th:if="${errorCode!=null}" th:text="'Codice errore: ' + ${errorCode}">Codice errore: 404</p>
-         <p>Per favore torna alla home e continua la navigazione(speriamo vada meglio :-|).</p>
-      </div>
-      <a href="/">Home</a>
-   </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errore inaspettato</title>
+    <link rel="stylesheet" href="/css/errorStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>:-(</h1>
+        <h2>OOPS! ERRORE INASPETTATO</h2>
+        <p>Ci scusiamo per il disagio, si è verificato un errore inaspettato. </p>
+        <br>
+        <div class="buttons">
+            <a href="/">RITORNA ALLA HOME</a>
+        </div>
+    </div>
+</body>
 </html>

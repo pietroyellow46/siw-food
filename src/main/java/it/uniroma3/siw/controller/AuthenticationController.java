@@ -100,7 +100,7 @@ public class AuthenticationController {
 			credentialsService.saveCredentials(credentials);
 			model.addAttribute("chef", chef);
 			System.out.println("noerr");
-			return "registrationSuccessful.html";
+			return "redirect:/login?success=true";
 		}
 		System.out.println("err" + userBindingResult.getAllErrors().toString());
 		return "formRegisterUser.html";

@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Errore inaspettato</title>
-   </head>
-   <body>
-      <div>
-         <h1>Le nostre scuse, Siw-Food ha avuto un problema 500.</h1>
-         <p th:if="${errorCode!=null}" th:text="'Codice errore: ' + ${errorCode}">Codice errore: 404</p>
-         <p>Per favore torna alla home e continua la navigazione(speriamo vada meglio :-|).</p>
-      </div>
-      <a href="/">Home</a>
-   </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Internal Errror</title>
+    <link rel="stylesheet" href="/css/errorStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>500</h1>
+        <h2>OOPS! PROBLEMA INTERNO</h2>
+        <p>Ci scusiamo per il disagio, il sistema ha avuto un problema interno. </p>
+        <br>
+        <div class="buttons">
+            <a href="/">RITORNA ALLA HOME</a>
+        </div>
+    </div>
+</body>
 </html>

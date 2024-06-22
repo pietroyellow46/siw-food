@@ -30,8 +30,10 @@ public class Recipe {
 
 	@NotBlank
 	private String nome;
-	
+
 	private String description;
+
+	private String procedure;
 
 	@Column(nullable = true)
 	private String mainImage;
@@ -66,7 +68,7 @@ public class Recipe {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -82,6 +84,14 @@ public class Recipe {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getProcedure() {
+		return procedure;
+	}
+
+	public void setProcedure(String procedure) {
+		this.procedure = procedure;
 	}
 
 	public Chef getChef() {
@@ -125,31 +135,51 @@ public class Recipe {
 	public void setExtraImage3(String extraImage3) {
 		this.extraImage3 = extraImage3;
 	}
-	
+
 	@Transient
 	public String getMainImagePath() {
 		if (mainImage == null) return null;
 		return "/images/recipe/"+id+"/"+mainImage;
 	}
-	
+
 	@Transient
 	public String getExtraImagePath2() {
 		if (extraImage2 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage2;
 	}
-	
+
 	@Transient
 	public String getExtraImagePath1() {
 		if (extraImage1 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage1;
 	}
-	
+
 	@Transient
 	public String getExtraImagePath3() {
 		if (extraImage3 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage3;
 	}
-	
+
+	public String[] getSplittedProcedure() {
+		String procedure = this.getProcedure();
+
+		if (procedure !=null) {
+			if(procedure.startsWith("_")) {
+				procedure = procedure.replace("_", "");
+				String[] procedureSplit = procedure.split("\\\\n");
+
+				for (int i = 0; i < procedureSplit.length; i++) {
+					procedureSplit[i] = procedureSplit[i].replace("\\", "");
+				}
+				return procedureSplit;
+			}
+			else {
+				return procedure.split("\n");
+			}
+		}
+		return null;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -167,5 +197,4 @@ public class Recipe {
 		Recipe other = (Recipe) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
-
 }

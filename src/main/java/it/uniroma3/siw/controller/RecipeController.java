@@ -59,7 +59,9 @@ public class RecipeController {
 	//pagina con dettagli di una ricetta
 	@GetMapping("/recipe/{id}")
 	public String getRecipe(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("recipe", this.recipeService.findById(id));
+		Recipe recipe = this.recipeService.findById(id);
+		model.addAttribute("recipe", recipe);
+		model.addAttribute("proc",recipe.getSplittedProcedure());
 		return "recipe.html";
 	}
 
@@ -122,6 +124,7 @@ public class RecipeController {
 
 			this.recipeService.save(recipe);
 			model.addAttribute(recipe);
+			System.out.println("\n\n" +recipe.getDescription()+ "\n\n");
 			return "redirect:/recipe/"+recipe.getId();
 		}
 	}

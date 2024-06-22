@@ -1,0 +1,424 @@
+/* MAIN CONTENT */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none; /* no sottolineatura su link */
+}
+
+body {
+    font-family: system-ui;
+    width: 100%;
+    margin-inline: auto;
+    background-image: url('../images/top-view-table-full-delicious-food-assortment.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    --gialloMio: #f1c006;
+    --arancioneMio: #fc841c;
+    --color1: #FFF;
+    --color2: #181818;
+}
+
+.container {
+    display: flex;
+    margin-top: 3.5rem;
+}
+
+/* NAVBAR */
+.nav-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    position: relative;
+    background-color: var(--gialloMio);
+    padding: 12px 20px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom: 2px solid white;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.navmenu {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.navmenu li {
+    padding-left: 30px;
+    margin-top: auto; /* Spinge verso il basso l'elemento fino al fondo della navbar */
+    margin-bottom: auto;
+}
+
+#login-link {
+    margin-left: auto;
+}
+
+.navmenu li a {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
+}
+
+.navmenu li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: 0.15s ease-in-out;
+}
+
+.navmenu li a:hover::after {
+    width: 100%;
+}
+
+.login-icon {
+    position: absolute;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: none;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.login-icon a i {
+    color: white; /* Imposta il colore dell'icona */
+    font-size: 2rem; /* Facoltativo: modifica la dimensione dell'icona */
+}
+
+@media (max-width: 850px) {
+    .navmenu {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 100;
+        background-color: var(--color2);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .navmenu li {
+        margin-top: 40px;
+    }
+
+    .navmenu li a {
+        padding: 10px;
+    }
+
+    .login-icon {
+        display: block;
+    }
+}
+
+/* SEARCH BAR */
+.search-item {
+    margin-right: 0; /* Rimuovi il margine destro per posizionarlo a tre quarti */
+    flex-grow: 1; /* Occupa lo spazio rimanente */
+    display: flex;
+    justify-content: center; /* Centra la barra di ricerca */
+}
+
+.barra-ricerca {
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 20px;
+    backdrop-filter: blur(4px) saturate(180%);
+    height: 40px;
+    max-width: 300px;
+    margin-left: 15rem;
+    width: 100%; /* Ensure the search bar doesn't exceed its container */
+}
+
+@media (max-width: 1220px) {
+    .barra-ricerca {
+        margin-left: 0rem;
+    }
+}
+
+.barra-ricerca input {
+    background: transparent;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 0.5rem 0.6rem;
+    font-size: 15px;
+    color: white;
+}
+
+::placeholder {
+    color: white;
+}
+
+.barra-ricerca button {
+    border: 0;
+    border-radius: 50%;
+    background: var(--arancioneMio);
+    cursor: pointer;
+    width: 27px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.barra-ricerca button i.bx {
+    font-size: 20px; /* Dimensione dell'icona */
+    color: white;
+}
+
+/* SIDEBAR CONTENT */
+.sidebar {
+    width: 280px;
+    height: min-content;
+    padding: 1.5rem;
+    background-color: var(--gialloMio);
+    margin-left: 2rem;
+    border-radius: 50px;
+    border: 2px solid white;
+    min-width: 280px;
+}
+
+.sidebar h2 {
+    color: var(--arancioneMio);
+    text-align: center;
+}
+
+.menu {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.sidebar label {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
+}
+
+.sidebar label::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: 0.15s ease-in-out;
+}
+
+.sidebar label:hover::after {
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle + label {
+    display: block;
+    background-color: var(--gialloMio);
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.menu-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.menu-content li {
+    list-style: none;
+}
+
+.menu-content li a {
+    color: black;
+}
+
+.menu-toggle:checked + label + .menu-content {
+    max-height: 1000px; /* sufficiently large value to show content */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        align-self: center; /* lo mette al centro dello schermo */
+        width: max-content;
+        border-right: none;
+        border: 2px solid white;
+        margin-bottom: 1rem;
+    }
+
+    .wrapper {
+        margin-left: 0;
+    }
+    
+
+}
+
+.main{
+	margin-bottom: 40px;
+}
+
+.main .main-content {
+	background: rgba(255,255,255,.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 25px 45px rgba(0, 0, 0, .2);
+	border-radius: 50px;
+    border: 2px solid white;
+    border-right: 2px solid white;
+    min-width: 900px;
+    border-bottom: 2px solid white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 30px;
+    color: white; /* Optional: change text color inside the box */
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.main-content ol{
+	list-style-position: inside;
+}
+
+.title{
+	margin-bottom: 20px;
+}
+
+.asideText li a {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
+}
+
+.asideText li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: 0.15s ease-in-out;
+}
+
+.asideText li a:hover::after {
+    width: 100%;
+}
+
+	
+ .imageAsideText {
+	 		margin-top: 25px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .imageAsideText ul{
+			list-style-position: outside;
+			margin-left: 15px;
+		}
+        
+        .mainImage img {
+            margin-right: 20px;
+            border-radius: 15px; /* Aggiunge bordi stondati all'immagine */
+            height:450px; /* Imposta la larghezza dell'immagine */
+            max-width: 400px;
+            max-height: 250px;
+        }
+        
+             
+        .ingredientsList {
+            flex: 1;
+        }
+        
+        .image-equalyspaced {
+			margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+            
+        }
+        
+        .image-equalyspaced img {
+			border-radius: 15px;
+            max-width: 400px;
+            width: auto;
+            max-height: 200px;
+        }
+        
+         @media (max-width: 768px) {
+			 .main .main-content{
+				 	min-width: 500px;
+
+			 }
+			 
+			.mainImage img {
+				width: auto;
+				height: auto;
+            max-width: 250px;
+            max-height: 250px;
+        }
+			 
+            .image-equalyspaced {
+                flex-direction: column;
+                align-items: center;
+            }
+            .image-equalyspaced img {
+                max-width: 250px;
+                height: auto;
+                width: auto;
+                max-height: 250px;
+                margin-bottom: 10px;
+            }
+        }
+	
