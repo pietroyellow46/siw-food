@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 //mette a disposizione di ogni vista un attributo
 @ControllerAdvice
 public class GlobalController {
-	
+
 	//nome del attributo sempre disponibile
 	@ModelAttribute("userDetails")
 	public UserDetails getUser() {

@@ -82,11 +82,11 @@
 				<h2 class="title" th:text="${recipe.nome}">Pizza Margherita</h2>  <!-- nome ricetta -->
 				
 				<div th:if="${recipe.chef}">
-		<span>Chef: </span>
-		<span th:text="${recipe.chef.name} "> Bruno</span>
-		<span th:text="${recipe.chef.surname} "> Barbieri</span>
-	</div>
-	<div th:unless="${recipe.chef}">Chef: non disponibile</div>
+					<span>Chef: </span>
+					<span th:text="${recipe.chef.name} "> Bruno</span>
+					<span th:text="${recipe.chef.surname} "> Barbieri</span>
+				</div>
+				<div th:unless="${recipe.chef}">Chef: non disponibile</div>
 				<p th:if="${recipe.description!=null}" th:text="${recipe.description}"></p>  <!-- descrizione ricetta -->
 				<p th:unless="${recipe.description!=null}">Descrizione non disponibile</p>  <!-- descrizione ricetta -->
            		

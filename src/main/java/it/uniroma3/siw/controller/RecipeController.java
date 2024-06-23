@@ -47,6 +47,15 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeValidator recipeValidator;
+	
+	@GetMapping("/homepage")
+	public String home(Model model) {		
+		model.addAttribute("chef", this.chefService.findAllNotAdmin());
+		model.addAttribute("idRecipe",1);
+		Recipe recipe = this.recipeService.findById(Integer.toUnsignedLong(1));
+		model.addAttribute("recipe", recipe);
+		return "homepage.html";
+	}
 
 
 	//pagina con lista ricette
@@ -200,6 +209,7 @@ public class RecipeController {
 	@GetMapping("admin/addChef/{id}")
 	public String addChef(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("chef", this.chefService.findAllNotAdmin());
+		model.addAttribute("recipe", this.recipeService.findById(id));
 		model.addAttribute("idRecipe",id);
 		return "admin/addChef.html";
 	}
@@ -209,7 +219,7 @@ public class RecipeController {
 	public String setChefToRecipe(@PathVariable("idChef") Long idChef,@PathVariable("idRecipe") Long idRecipe) {
 		Recipe recipe = recipeService.findById(idRecipe);
 		recipe.setChef(this.chefService.findById(idChef));
-		
+
 		if (recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef()))
 			return "redirect:/admin/addChef/"+idRecipe+"?error=true";
 		this.recipeService.save(recipe);
@@ -337,7 +347,7 @@ public class RecipeController {
 			recipe.setId(recipeId);
 			recipe.setChef(oldRecipe.getChef());
 			recipe.setUsedIngredients(oldRecipe.getUsedIngredients());
-			
+
 			this.recipeValidator.validate(recipe, bindingResult);
 			if (bindingResult.hasErrors()) {
 				return "redirect:/chef/updateRecipe/"+recipeId+"?error=true";
@@ -376,7 +386,7 @@ public class RecipeController {
 					MvcConfig.saveUploadFile(uploadDir, extraMultipartFiles[2], newExtraImage3);
 				} else
 					recipe.setExtraImage3(oldRecipe.getExtraImage3());
-								
+
 				this.recipeService.save(recipe);
 				return "redirect:/chef/formUpdateRecipe/"+recipeId;
 			}

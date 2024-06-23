@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${recipe.nome}">SiwFood</title>
+    <title>Modifica ingredienti</title>
     <link rel="stylesheet" href="/css/detailsStyle.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
+
 <body>
     <header>
         <!-- navbar -->
         <nav>
             <ul class='nav-bar'>
                 <!-- logo -->
-                <li class='logo'><a href=''><img src='./images/logowhite.png' alt='logo'/></a></li>
+                <li class='logo'><a href=''><img src='/images/logowhite.png' alt='logo'/></a></li>
                 <!-- menu navbar -->
                 <span class="navmenu">
                     <!-- barraRicerca -->
@@ -79,55 +80,47 @@
 		<div class="main">
 			<div class="main-content">
 				
-				<h2 class="title" th:text="${recipe.nome}">Pizza Margherita</h2>  <!-- nome ricetta -->
-				
-				<div th:if="${recipe.chef}">
-		<span>Chef: </span>
-		<span th:text="${recipe.chef.name} "> Bruno</span>
-		<span th:text="${recipe.chef.surname} "> Barbieri</span>
-	</div>
-	<div th:unless="${recipe.chef}">Chef: non disponibile</div>
-				<p th:if="${recipe.description!=null}" th:text="${recipe.description}"></p>  <!-- descrizione ricetta -->
-           		
-           		<div class="imageAsideText">
+			
+			
+				<div class="imageAsideText">
 					   
         			<div class="mainImage">
             			<img th:src="@{${recipe.MainImagePath}}" alt="Descrizione immagine">
         			</div>
         			
 					<div class="asideText">
-						<div th:if="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">Non ci sono ingredienti registrati</div>
-           				<div th:unless="${recipe.usedIngredients==null || recipe.usedIngredients.isEmpty()}">
-							<span>Ingredienti: </span>
-							<ul>
-								<li th:each="usedIngredients : ${recipe.usedIngredients}">
-									<span th:if="${usedIngredients.quantity!=0}" th:text="${usedIngredients.ingredient.name}+' ' + ${usedIngredients.quantity}+' ' + ${usedIngredients.measurement}">10</span>
-									<span th:unless="${usedIngredients.quantity!=0}" th:text="${usedIngredients.ingredient.name} +' ' + ${usedIngredients.measurement}">10</span>
-								</li>
-							</ul>
-           				</div>
-        			</div>
+									<h2 class="title" th:text="${recipe.nome}">Pizza Margherita</h2>  <!-- nome ricetta -->
+
+           				<div th:if="${recipe.description!=null}" th:text="${recipe.description}"></div>  <!-- descrizione ricetta -->
+						<div th:unless="${recipe.description!=null}">Descrizione non disponibile</div>  <!-- descrizione ricetta -->
+        				<div th:if="${recipe.chef}">
+					<span>Chef: </span>
+					<span th:text="${recipe.chef.name} "> Bruno</span>
+					<span th:text="${recipe.chef.surname} "> Barbieri</span>
+				</div>
+				<div th:unless="${recipe.chef}">Chef: non disponibile</div>
+        		</div>
         			
     			</div>
     			
-    			
-   				<p th:if="${proc!=null}">
-					<span> Procedimento:</span>
-		 			<ol>
-						<li th:each="d : ${proc}" th:text="${d}"></li>
-					</ol>
-				</p>
+    			<div th:unless="${recipe.usedIngredients.isEmpty()}">
 				
-				<p th:unless="${proc!=null}">
-					<span>Procedimento non presente</span>
-				</p>
-				
-				<div class="image-equalyspaced">
-            			<img th:src="@{${recipe.ExtraImagePath1}}" alt="Descrizione immagine">
-            			<img th:src="@{${recipe.ExtraImagePath2}}" alt="Descrizione immagine">
-            			<img th:src="@{${recipe.ExtraImagePath3}}" alt="Descrizione immagine">
-   				</div>
-				
+					 <p>
+				<span th:if="${param.error != null}">Lo chef scelto ha già inserito una ricetta omonima</span>
+			</p>
+	<div th:if="${chef==null || chef.isEmpty()}">Non ci sono chef nel sistema</div>
+	<div>Chef a cui associare questa ricetta:</div>
+	<div class="asideText">
+	
+		
+		<ul>
+								<li th:each="c : ${chef}">
+									<a th:href="@{'/admin/setChefToRecipe' + '/' + ${c.id}+ '/' + ${idRecipe}}" th:text="${c.name}+' ' + ${c.surname}">Tagliatelle(Bruno Barbieri)</a>
+								</li>
+		</ul>
+	</div>	
+           		
+           				
 			</div>
         </div>
     </div>

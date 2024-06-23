@@ -1,50 +1,51 @@
 <!DOCTYPE html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>SiwFood</title>
-	<link rel="stylesheet" href="/css/homepage.css">
-	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="icon" href="../favicon.ico" type="image/x-icon">
-</head>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SiwFood</title>
+		<link rel="stylesheet" href="/css/homepage.css">
+		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	</head>
 
-<body>	
-	<header>
+	<body>	
+		<header>
 		
-		<!-- navbar -->
-    	<nav>
-        	<ul class='nav-bar'>
+			<!-- navbar -->
+    		<nav>
+        		<ul class='nav-bar'>
 				
-				<!-- logo -->
-            	<li class='logo'><a href=''><img src='./images/logowhite.png'/></a></li>
+					<!-- logo -->
+            		<li class='logo'><a href=''><img src='./images/logowhite.png'/></a></li>
             	
-            	<!-- menu navbar -->
-            	<span class="navmenu">
+            		<!-- menu navbar -->
+            		<span class="navmenu">
 					
-					<!-- barraRicerca -->
-                	<div class="search-container">
-                  		<li>
-    						<form th:action="@{/searchRecipe}" method="post" class="barra-ricerca">
-       							<input required type="text" placeholder="Ricetta" th:value="${nome}" name="nome" autocomplete="off"/>
-        						<button type="submit"><i class='bx bx-search'></i></button>
-    						</form>
-						</li>
-                	</div>
+						<!-- barraRicerca -->
+                		<div class="search-container">
+                  			<li>
+    							<form th:action="@{/searchRecipe}" method="post" class="barra-ricerca">
+       								<input required type="text" placeholder="Ricetta" th:value="${nome}" name="nome" autocomplete="off"/>
+        							<button type="submit"><i class='bx bx-search'></i></button>
+    							</form>
+							</li>
+                		</div>
                 	
-                <!-- link login/scritta con nome -->	
-                <li th:unless="${userDetails}" id="login-link"><a href="/login">Login</a></li>
-				<li th:if="${userDetails}" id="login-link">
-    				<span th:text="'Bentornato ' + ${userDetails.getUsername()} + ', '"></span>
-    				<a href="/logout" th:text="'logout'">logout</a>
-				</li>
+                		<!-- link login/scritta con nome -->	
+                		<li th:unless="${userDetails}" id="login-link"><a href="/login">Login</a></li>
+						<li th:if="${userDetails}" id="login-link">
+    						<span th:text="'Bentornato ' + ${userDetails.getUsername()} + ', '"></span>
+    						<a href="/logout" th:text="'logout'">logout</a>
+						</li>
 				
-				</span>
+					</span>
 				
-				<!-- icona login/logout -->
-            	<label th:unless="${userDetails}" class="login-icon"><a href="/login"><i class='bx bx-log-in-circle'></i></a></label>
-            	<label th:if="${userDetails}" class="login-icon"><a href="/logout"><i class='bx bx-log-out-circle'></i></a></label>
-        	</ul>
-    	</nav>
+					<!-- icona login/logout -->
+            		<label th:unless="${userDetails}" class="login-icon"><a href="/login"><i class='bx bx-log-in-circle'></i></a></label>
+            		<label th:if="${userDetails}" class="login-icon"><a href="/logout"><i class='bx bx-log-out-circle'></i></a></label>
+        		</ul>
+    		</nav>
     	
 	</header>
 

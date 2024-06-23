@@ -1,9 +1,7 @@
 package it.uniroma3.siw.model;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,21 +11,21 @@ import jakarta.persistence.ManyToOne;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UsedIngredient {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private Integer quantity;
-	
+
 	private String measurement;
-	
+
 	@ManyToOne
 	private Ingredient ingredient;
-	
+
 	@ManyToOne
 	private Recipe recipe;
-	
+
 	public Ingredient getIngredient() {
 		return ingredient;
 	}

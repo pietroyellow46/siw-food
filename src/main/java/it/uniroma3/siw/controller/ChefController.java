@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Chef;
-import it.uniroma3.siw.model.Recipe;
+import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.service.ChefService;
 import it.uniroma3.siw.service.RecipeService;
 import jakarta.validation.Valid;
@@ -29,17 +29,9 @@ public class ChefController {
 	@Autowired
 	private RecipeService recipeService;
 	
-	@GetMapping("/homepage")
-	public String homepage(Model model) {	
-		Recipe recipe = this.recipeService.findById(Integer.toUnsignedLong(151));
-		
-		model.addAttribute("proc",recipe.getSplittedProcedure());
+	
 
 	
-		model.addAttribute("recipe",recipe);
-		return "homepage.html";
-	}
-
 	//ritorna lista tutti chef non admin
 	@GetMapping("/allChef")
 	public String getAllChef(Model model) {		
