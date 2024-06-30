@@ -1,10 +1,6 @@
 package it.uniroma3.siw.controller;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -51,20 +47,8 @@ public class AuthenticationController {
 	//ritorna a index se non loggato, indexChef se sei loggato non admin, indexAdmin se sei admin
 	@GetMapping("/") 
 	public String index(Model model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.print(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
-		if (authentication instanceof AnonymousAuthenticationToken) {
-			return "index.html";
-		}
-		else {		
-			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-			System.out.print(credentials.getUsername());
-			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-				return "admin/indexAdmin.html";
-			}
-			return "chef/indexChef.html";
-		}
+		return "redirect:/recipe";
+		
 	}
 
 	//pagina di ritorno al login andato bene, ritorna a / che ti restituisce pagine diverse in base al ruolo
@@ -79,7 +63,7 @@ public class AuthenticationController {
 			@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 
-		// se user e credential hanno entrambi contenuti validi, memorizza User e the Credentials nel DB
+		// se user e credential hanno entrambi contenuti validi, memorizza User e Credentials nel DB
 		this.credentialsValidator.validate(credentials, credentialsBindingResult);
 		if(!userBindingResult.hasErrors() && ! credentialsBindingResult.hasErrors()) {
 
@@ -99,10 +83,8 @@ public class AuthenticationController {
 			credentials.setUser(chef);
 			credentialsService.saveCredentials(credentials);
 			model.addAttribute("chef", chef);
-			System.out.println("noerr");
 			return "redirect:/login?success=true";
 		}
-		System.out.println("err" + userBindingResult.getAllErrors().toString());
 		return "formRegisterUser.html";
 	}
 }

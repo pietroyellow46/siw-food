@@ -1,8 +1,11 @@
 package it.uniroma3.siw.model;
 import java.util.List;
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +36,7 @@ public class Recipe {
 
 	private String description;
 
+	@Column(length = 500)
 	private String procedure;
 
 	@Column(nullable = true)
@@ -136,34 +140,43 @@ public class Recipe {
 		this.extraImage3 = extraImage3;
 	}
 
+	@JsonIgnore
 	@Transient
 	public String getMainImagePath() {
 		if (mainImage == null) return null;
 		return "/images/recipe/"+id+"/"+mainImage;
 	}
 
+	@JsonIgnore
 	@Transient
 	public String getExtraImagePath2() {
 		if (extraImage2 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage2;
 	}
 
+	@JsonIgnore
 	@Transient
 	public String getExtraImagePath1() {
 		if (extraImage1 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage1;
 	}
 
+	@JsonIgnore
 	@Transient
 	public String getExtraImagePath3() {
 		if (extraImage3 == null) return null;
 		return "/images/recipe/"+id+"/"+extraImage3;
 	}
 
+	@JsonIgnore
+	@Transient
 	public String[] getSplittedProcedure() {
 		String procedure = this.getProcedure();
 
-		if (procedure !=null) {
+		if (procedure==null)
+			return null;
+		
+		if (!procedure.isBlank()) {
 			if(procedure.startsWith("_")) {
 				procedure = procedure.replace("_", "");
 				String[] procedureSplit = procedure.split("\\\\n");

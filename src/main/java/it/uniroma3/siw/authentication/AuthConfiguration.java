@@ -1,7 +1,9 @@
 package it.uniroma3.siw.authentication;
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
 import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
+
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +46,7 @@ public class AuthConfiguration {
 		// .requestMatchers("/**").permitAll()
 
 		//cosa accede chi non loggato
-		.requestMatchers(HttpMethod.GET,"/","static/images/logowhite.png","static/images/logoblack.png","static/images/logofull.png","/static/images/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.png","/static/images/search1.png","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "homepage", "/login").permitAll()
+		.requestMatchers(HttpMethod.GET,"/","static/images/logowhite.png","static/images/logoblack.png","static/images/logofull.png","/static/images/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.png","/static/images/search1.png","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "homepage", "/login", "/rest/**").permitAll()
 		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchRecipe","/searchIngredient", "/searchChef").permitAll()
 
 		//cosa accede chi loggato o admin o chef normale

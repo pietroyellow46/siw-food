@@ -1,7 +1,6 @@
 package it.uniroma3.siw.controller;
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.model.Ingredient;
-import it.uniroma3.siw.model.Recipe;
 import it.uniroma3.siw.service.IngredientService;
 import it.uniroma3.siw.service.RecipeService;
 import it.uniroma3.siw.validator.IngredientValidator;
@@ -32,8 +30,6 @@ public class IngredientController {
 	@Autowired
 	private IngredientValidator ingredientValidator;
 	
-
-
 	//lista ingredienti
 	@GetMapping("/ingredient")
 	public String getIngredients(Model model) {		
@@ -41,7 +37,7 @@ public class IngredientController {
 		return "ingredients.html";
 	}
 
-	//ritorna dettagli di un ingrediente
+	//dettagli ingrediente
 	@GetMapping("/ingredient/{id}")
 	public String getIngredient(@PathVariable("id") Long id, Model model) {
 		Ingredient ingredient = this.ingredientService.findById(id);
@@ -61,11 +57,12 @@ public class IngredientController {
 	@PostMapping("admin/ingredient")
 	public String newIngredient(@Valid @ModelAttribute("ingredient") Ingredient ingredient,BindingResult bindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
-		this.ingredientValidator.validate(ingredient, bindingResult);
+		
+		this.ingredientValidator.validate(ingredient, bindingResult); //vedi se ci sono duplicati
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "admin/formNewIngredient.html";
 		} else {
-			if (!multipartFile.isEmpty()) {
+			if (!multipartFile.isEmpty()) { //se hai caricato la foto
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				this.ingredientService.save(ingredient);
 
@@ -78,7 +75,7 @@ public class IngredientController {
 				MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
 			}
 			else {
-				this.ingredientService.save(ingredient);
+				this.ingredientService.save(ingredient); //se non hai caricato la foto salvi solo
 			}
 			model.addAttribute(ingredient);
 			return "redirect:/ingredient/"+ingredient.getId();
@@ -94,7 +91,14 @@ public class IngredientController {
 	//raccoglie la post con il nome da cercare
 	@PostMapping("/searchIngredient")
 	public String foundIngredient(Model model, @RequestParam String name) {
-		model.addAttribute("ingredients", this.ingredientService.findByName(name));
+		List<Ingredient> foundIngredient = this.ingredientService.findByName(name);
+		
+		if (foundIngredient.isEmpty()) { //se non trovi nulla
+			model.addAttribute("message", "Nessun ingrediente con i criteri desiderati trovato");
+			return "emptypage.html";
+		}
+		
+		model.addAttribute("ingredients", foundIngredient);
 		return "foundIngredient.html";
 	}
 
@@ -109,7 +113,7 @@ public class IngredientController {
 	@GetMapping("admin/removeIngredient/{ingredientId}")
 	public String removeIngredient(@PathVariable("ingredientId") Long ingredientId, Model model) {
 		Ingredient i = ingredientService.findById(ingredientId);
-		MvcConfig.deleteFile("./images/ingredient/"+i.getPathImage());
+		MvcConfig.deleteFile("./images/ingredient/"+i.getPathImage()); //elimina la foto se presente
 		this.ingredientService.deleteIngredient(i);
 		return "redirect:/admin/manageIngredient";
 	}
@@ -126,7 +130,7 @@ public class IngredientController {
 	public String formUpdateIngredient(@PathVariable("id") Long id, Model model) {
 		Ingredient i = this.ingredientService.findById(id);
 		model.addAttribute("ingredient", i);
-		model.addAttribute("recipes", this.recipeService.findRecipeWithIngredient(id));
+		model.addAttribute("recipes", this.recipeService.findRecipeWithIngredient(id)); //tutte le ricette con l'ingrediente
 		return "admin/formUpdateIngredient.html";
 	}
 

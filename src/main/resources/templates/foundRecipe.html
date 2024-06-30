@@ -1,98 +1,109 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>SiwFood</title>
+	<title>Ricette trovate</title>
 	<link rel="stylesheet" href="/css/homepage.css">
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 
-<body>	
+<body>
 	<header>
-		
+
 		<!-- navbar -->
-    	<nav>
-        	<ul class='nav-bar'>
-				
+		<nav>
+			<ul class='nav-bar'>
+
 				<!-- logo -->
-            	<li class='logo'><a href=''><img src='./images/logowhite.png'/></a></li>
-            	
-            	<!-- menu navbar -->
-            	<span class="navmenu">
-					
+				<li class='logo'><a href=''><img src='./images/logowhite.png' /></a></li>
+
+				<!-- menu navbar -->
+				<span class="navmenu">
+
 					<!-- barraRicerca -->
-                	<div class="search-container">
-                  		<li>
-    						<form th:action="@{/searchRecipe}" method="post" class="barra-ricerca">
-       							<input required type="text" placeholder="Ricetta" th:value="${nome}" name="nome" autocomplete="off"/>
-        						<button type="submit"><i class='bx bx-search'></i></button>
-    						</form>
+					<div class="search-container">
+						<li>
+							<form th:action="@{/searchRecipe}" method="post" class="barra-ricerca">
+								<input required type="text" placeholder="Ricetta" th:value="${nome}" name="nome"
+									autocomplete="off" />
+								<button type="submit"><i class='bx bx-search'></i></button>
+							</form>
 						</li>
-                	</div>
-                	
-                <!-- link login/scritta con nome -->	
-                <li th:unless="${userDetails}" id="login-link"><a href="/login">Login</a></li>
-				<li th:if="${userDetails}" id="login-link">
-    				<span th:text="'Bentornato ' + ${userDetails.getUsername()} + ', '"></span>
-    				<a href="/logout" th:text="'logout'">logout</a>
-				</li>
-				
+					</div>
+
+					<!-- link login/scritta con nome -->
+					<li th:unless="${userDetails}" id="login-link"><a href="/login">Login</a></li>
+					<li th:if="${userDetails}" id="login-link">
+						<span th:text="'Bentornato ' + ${userDetails.getUsername()} + ', '"></span>
+						<a href="/logout" th:text="'logout'">logout</a>
+					</li>
+
 				</span>
-				
+
 				<!-- icona login/logout -->
-            	<label th:unless="${userDetails}" class="login-icon"><a href="/login"><i class='bx bx-log-in-circle'></i></a></label>
-            	<label th:if="${userDetails}" class="login-icon"><a href="/logout"><i class='bx bx-log-out-circle'></i></a></label>
-        	</ul>
-    	</nav>
-    	
+				<label th:unless="${userDetails}" class="login-icon"><a href="/login"><i
+							class='bx bx-log-in-circle'></i></a></label>
+				<label th:if="${userDetails}" class="login-icon"><a href="/logout"><i
+							class='bx bx-log-out-circle'></i></a></label>
+			</ul>
+		</nav>
+
 	</header>
 
 	<div class="container">
-		
-		<!-- sidebar -->	
+
+		<!-- sidebar -->
 		<aside class="sidebar">
 			<h2>Mappa del sito</h2>
 			<br>
-			
-			<!-- menu ingredieni -->	
+
+			<!-- menu ingredieni -->
 			<div class="menu">
 				<input type="checkbox" id="menu1" class="menu-toggle">
 				<label for="menu1">Operazioni sugli ingredienti</label>
 				<ul class="menu-content">
 					<li><a href="/ingredient">Visualizza ingredienti</a></li>
+					<li th:if="${isAdmin}"><a href="/admin/formNewIngredient">Aggiungi ingrediente</a></li>
+					<li th:if="${isAdmin}"><a href="/admin/manageIngredient">Modifica ingrediente</a></li>
 					<li><a href="/searchIngredient">Cerca ingrediente</a></li>
 				</ul>
 			</div>
-		
+
 			<!-- menu chef -->
 			<div class="menu">
 				<input type="checkbox" id="menu2" class="menu-toggle">
 				<label for="menu2">Operazioni sugli chef</label>
 				<ul class="menu-content">
 					<li><a href="/allChef">Visualizza chef</a></li>
+					<li th:if="${isAdmin}"><a href="/admin/formNewChef">Aggiungi chef</a></li>
+					<li th:if="${isAdmin}"><a href="/admin/manageChef">Modifica chef</a></li>
 					<li><a href="/searchChef">Cerca chef</a></li>
 				</ul>
 			</div>
-		
+
 			<!-- menu ricette -->
 			<div class="menu">
 				<input type="checkbox" id="menu3" class="menu-toggle">
 				<label for="menu3">Operazioni sulle ricette</label>
 				<ul class="menu-content">
 					<li><a href="/recipe">Visualizza ricette</a></li>
+					<li th:if="${isAuthenticated}"><a href="/chef/formNewRecipe">Aggiungi ricetta</a></li>
+					<li th:if="${isAuthenticated}"><a href="/chef/manageRecipe">Modifica ricetta</a></li>
 					<li><a href="/searchRecipe">Cerca ricetta</a></li>
 				</ul>
 			</div>
 		</aside>
-	
+
 		<!-- contenuto main -->
 		<div class="main">
 			<a th:each="recipe : ${recipes}" class="box" th:href="@{'/recipe' + '/' + ${recipe.id}}">
 				<h2>
 					<div th:text="${recipe.nome}">Tagliatelle</div>
-					<div  th:if="${recipe.chef != null}" th:text="'(' + ${recipe.chef.name+' '+recipe.chef.surname} + ')'"></div>
+					<div th:if="${recipe.chef != null}"
+						th:text="'(' + ${recipe.chef.name+' '+recipe.chef.surname} + ')'"></div>
 					<div th:if="${recipe.chef == null}" th:text="'(chef  non presente)'">(chef non presente)></div>
 				</h2>
 				<p th:if="${recipe.description!=null}" th:text="${recipe.description}"></p>
@@ -102,4 +113,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

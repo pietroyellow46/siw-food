@@ -18,7 +18,11 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
 	//cerca ricette dello chef di id passato
 	@Query(value = "SELECT * FROM RECIPE WHERE chef_id = :chefId", nativeQuery = true)
-	public List<Recipe> findByIdChef(@Param("chefId") Long id);	
+	public List<Recipe> findByIdChef(@Param("chefId") Long id);
+	
+	//cerca per nome ma case insensitive
+	@Query(value = "SELECT * FROM recipe WHERE nome ILIKE '%' || :nome || '%'", nativeQuery = true)
+	public List<Recipe> findByNameInsensitive(@Param("nome") String nome); //ricerca per nome
 
 	//ritorna tutte ricette con ingrediente di id passato
 	@Query(value = "SELECT recipe.* FROM recipe JOIN used_ingredient ON recipe.id = used_ingredient.recipe_id JOIN ingredient ON used_ingredient.ingredient_id = ingredient.id WHERE ingredient.id = :ingredientId", nativeQuery = true)
@@ -28,5 +32,9 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 	@Query(value = "SELECT EXISTS (SELECT 1 FROM recipe WHERE chef_id = :idChef AND id = :idRecipe) AS ricetta_presente", nativeQuery = true)
 	public boolean isRecipeofChef(@Param("idRecipe") Long idRecipe,@Param("idChef") Long idChef);
 
+	//verifica esistenza ricetta di nome e chef passato
 	public boolean existsByNomeAndChef(String nome, Chef chef);
+	
+	//verifica esistenza ricetta di nome e chef passato e id diverso da passato
+    boolean existsByNomeAndChefAndIdNot(String nome, Chef chef, Long id);
 }

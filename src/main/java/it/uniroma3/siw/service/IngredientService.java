@@ -30,7 +30,7 @@ public class IngredientService {
 
 	//cerca per nome
 	public List<Ingredient> findByName(String name) {
-		return this.ingredientRepository.findByNameContaining(name);
+		return this.ingredientRepository.findByNameInsensitive(name);
 	}
 
 	//cerca ingredienti non nella ricetta passata
@@ -43,7 +43,13 @@ public class IngredientService {
 		this.ingredientRepository.delete(ingredient);
 	}
 
+	//verifica esistenza di ingrediente con dato nome
 	public boolean existsByName(String name) {
 		return this.ingredientRepository.existsByName(name);
+	}
+
+	//verifica esistenza di ingrediente con id diverso ma nome uguale do quello passato
+	public boolean verificaEsistenzaIngredienteConNome(Ingredient ingredient) {
+		return ingredientRepository.existsByNameAndIdNot(ingredient.getName(), ingredient.getId());
 	}
 }

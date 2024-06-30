@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,6 +45,7 @@ public class Chef {
 	@OneToMany(mappedBy = "chef")
 	private List<Recipe> recipes;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
 	private Credentials credential;
 
@@ -93,6 +95,7 @@ public class Chef {
 	}
 
 	@Transient
+	@JsonIgnore
 	public String getPhotoImagePath() {
 		if (pathImage == null) return null;
 		return "/images/chef/"+pathImage;

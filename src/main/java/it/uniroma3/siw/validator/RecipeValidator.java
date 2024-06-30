@@ -14,11 +14,14 @@ public class RecipeValidator implements Validator {
   @Autowired
   private RecipeService recipeService;
 
-  @Override
+  @Override //verifica ricette omonime
   public void validate(Object o, Errors errors) {
     Recipe recipe = (Recipe)o;
-    if (recipe.getNome()!=null && recipe.getChef()!=null && recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef())) {
-      errors.reject("recipe.duplicate");
+    if (recipe.getNome()!=null && recipe.getChef()!=null) {
+    	if (recipe.getId()==null && recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef())) //verifica esistenza ricetta di chef e nome
+    		errors.reject("recipe.duplicate");
+    	if(recipe.getId()!=null && recipeService.verificaEsistenzaRicettaConNomeEChef(recipe)) //verifica esistenza di ricetta con id diverso ma stesso nome e chef
+    		errors.reject("recipe.duplicate");
     }
   }
   

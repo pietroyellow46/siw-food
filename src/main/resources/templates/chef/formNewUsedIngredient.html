@@ -1,39 +1,46 @@
 <!DOCTYPE html>
-<html> <head>
-    <meta charset="UTF-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  	<title>Aggiungi ingrediente </title>
-  	<link rel="stylesheet" href="/css/formStyle.css">
-  	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  </head>
-  <body>
-	  
-	  <div class="wrapper">
-    	<form th:action="@{'/chef/usedIngredient/'+ ${ingredientId} +'/'+ ${recipeId}}" method="POST" th:object="${newUsedIngredient}">
-      
-      	<h1>Aggiungi un ingrediente</h1>
-      
-      	<!-- Errori globali -->
-      	<div class="error-message" th:if="${#fields.hasGlobalErrors()}">
-			<span class="error-message" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span> 
-	  	</div>
-	  
-	   	<!-- Field quantita -->
-      	<div class="input-box">
-        	<input type="text" placeholder="Quantità" th:field="${newUsedIngredient.quantity}" /> <!-- required -->
-			<span class="error-attribute" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
-        	<i class='bx bx-pencil bx-tada' ></i>
-      	</div>
-      
-       	<!-- Field unita di misura -->
-      	<div class="input-box">
-			<input type="text"  placeholder="Unità di misura"  th:field="${newUsedIngredient.measurement}"/> <!-- required -->
-			<span class="error-attribute" th:if="${#fields.hasErrors('measurement')}" th:errors="*{measurement}"></span>
-			<i class='bx bx-text bx-tada' ></i>
-      	</div>
-	   	<br>
-      <button type="submit" class="btn">Inserisci</button>
-    </form>
-  </div>
-  </body>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Aggiungi ingrediente </title>
+	<link rel="stylesheet" href="/css/formStyle.css">
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+	<div class="wrapper">
+		<form th:action="@{'/chef/usedIngredient/'+ ${ingredientId} +'/'+ ${recipeId}}" method="POST"
+			th:object="${newUsedIngredient}">
+
+			<h1>Aggiungi ingrediente</h1>
+
+			<!-- Errori globali -->
+			<div class="error-message" th:if="${#fields.hasGlobalErrors()}">
+				<span class="error-message" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</span> 
+			</div>
+
+			<!-- Field quantita -->
+			<div class="input-box">
+				<input type="text" placeholder="Quantità" th:field="${newUsedIngredient.quantity}" /> <!-- required -->
+				<span class="error-attribute" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+				<i class='bx bx-pencil '></i>
+			</div>
+
+			<!-- Field unita di misura -->
+			<div class="input-box">
+				<input type="text" placeholder="Unità di misura" th:field="${newUsedIngredient.measurement}" />
+				<!-- required -->
+				<span class="error-attribute" th:if="${#fields.hasErrors('measurement')}"
+					th:errors="*{measurement}"></span>
+				<i class='bx bx-text'></i>
+			</div>
+			<br>
+			<button type="submit" class="btn">Inserisci</button>
+		</form>
+	</div>
+</body>
+
 </html>

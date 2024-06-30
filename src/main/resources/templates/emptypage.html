@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Aggiungi ingrediente</title>
+	<title>Modifica ingredienti</title>
 	<link rel="stylesheet" href="/css/detailsStyle.css">
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -91,62 +91,15 @@
 
 		<!-- contenuto main -->
 		<div class="main">
-			<div class="main-content">
+			<div class="main-content" id="empty-container">
 
-				<!-- container con immagine e accanto testo -->
-				<div class="imageAsideText">
-
-					<!-- immagine ricetta -->
-					<div class="mainImage"> <img th:src="@{${recipe.MainImagePath}}" alt="Descrizione immagine"> </div>
-
-					<!-- testo affianco -->
-					<div class="asideText">
-						<h2 class="title" th:text="${recipe.nome}">Pizza Margherita</h2> <!-- nome ricetta -->
-						<div th:if="${recipe.description!=null}" th:text="${recipe.description}"></div>
-						<!-- descrizione ricetta -->
-						<div th:unless="${recipe.description!=null}">Descrizione non disponibile</div>
-						<!-- se descrizione ricetta non disponibile -->
-						<div th:if="${recipe.chef}"> <!-- chef ricetta -->
-							<span>Chef: </span>
-							<span th:text="${recipe.chef.name} "> Bruno</span>
-							<span th:text="${recipe.chef.surname} "> Barbieri</span>
-						</div>
-						<div th:unless="${recipe.chef}">Chef: non disponibile</div>
-						<!-- se chef ricetta non disponibile -->
-					</div>
-				</div>
-
-				<!-- ingredienti da rimuovere -->
-				<div th:unless="${recipe.usedIngredients.isEmpty()}">
-					<span>Ingredienti che puoi rimuovere:</span> <!-- se la ricetta ha ingredienti -->
-				</div>
-				<div th:if="${recipe.usedIngredients.isEmpty()}">Non ci sono ingredienti in questa ricetta</div>
-				<!-- se la ricetta non ha ingredienti -->
-				<ul>
-					<li th:each="used_ingredient : ${recipe.usedIngredients}">
-						<span th:text="${used_ingredient.ingredient.name}"></span>
-						<a th:href="@{'/chef/removeIngredientFromRecipe/'+ ${used_ingredient.id}}" class="a-smallicon">
-							<button type="button"> <i class='bx bx-x'> </i> </button>
-						</a>
-					</li>
-				</ul>
-				<br>
-
-				<!-- ingredienti da aggiungere -->
-				<div>Ingredienti che si possono aggiungere:
-					<ul>
-						<li th:each="ingredient : ${ingredientsToAdd}">
-							<span th:text="${ingredient.name}"></span>
-							<a th:href="@{'/chef/formNewIngredient/'+ ${ingredient.id}+'/'+${recipe.id}}"
-								class="a-smallicon">
-								<button type="button"> <i class='bx bx-plus'> </i> </button>
-							</a>
-						</li>
-					</ul>
-				</div>
+				<h2 id="empty-message" th:text="${message}">Nessuno chef con i criteri desiderati trovato</h2>
+				<!-- messaggio principale -->
+				<span th:unless="${secondMessage!=null}">Effettua nuovamente la ricerca con criteri meno
+					stringenti!</span> <!-- secondo messaggio -->
+				<span th:if="${secondMessage!=null}" th:text="${secondMessage}"></span>
 			</div>
 		</div>
-	</div>
 </body>
 
 </html>

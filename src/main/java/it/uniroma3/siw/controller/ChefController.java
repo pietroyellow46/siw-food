@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Chef;
-import it.uniroma3.siw.model.Ingredient;
 import it.uniroma3.siw.service.ChefService;
 import it.uniroma3.siw.service.RecipeService;
 import jakarta.validation.Valid;
@@ -28,10 +27,7 @@ public class ChefController {
 
 	@Autowired
 	private RecipeService recipeService;
-	
-	
 
-	
 	//ritorna lista tutti chef non admin
 	@GetMapping("/allChef")
 	public String getAllChef(Model model) {		
@@ -58,7 +54,15 @@ public class ChefController {
 	//cerca gli chef che hanno nome o cognome contenente la stringa inviata
 	@PostMapping("/searchChef")
 	public String foundChef(Model model, @RequestParam String nameSurname) {
-		model.addAttribute("chef", this.chefService.findByNameOrSurname(nameSurname, nameSurname));
+		List<Chef> foundChef = this.chefService.findByNameOrSurname(nameSurname, nameSurname);
+
+		//se non hai chef trovati ritorna pagina vuota con messaggio chef
+		if (foundChef.isEmpty()) {
+			model.addAttribute("message", "Nessuno chef con i criteri desiderati trovato");
+			return "emptypage.html";
+		}
+
+		model.addAttribute("chef", foundChef);
 		return "foundChef.html";
 	}
 
@@ -72,7 +76,7 @@ public class ChefController {
 		return "foundChef.html";
 	}
 
-	//pagina con lista chef che pupi modificare, non gli admin
+	//pagina con lista chef che puoi modificare, non gli admin
 	@GetMapping("admin/manageChef")
 	public String manageChef(Model model) {
 		model.addAttribute("chef", this.chefService.findAllNotAdmin());
@@ -84,13 +88,15 @@ public class ChefController {
 	public String formUpdateIngredient(@PathVariable("id") Long id, Model model) {
 		Chef c = this.chefService.findById(id);
 		model.addAttribute("chef", c);
-		model.addAttribute("recipes", this.recipeService.findByIdChef(id));
+		model.addAttribute("recipes", this.recipeService.findByIdChef(id)); //ricette dello chef
 		return "admin/formUpdateChef.html";
 	}
 
 	//rimuove lo chef
 	@GetMapping("admin/removeChef/{chefId}")
 	public String removeChef(@PathVariable("chefId") Long chefId, Model model) {
+		Chef c = this.chefService.findById(chefId);
+		MvcConfig.deleteFile("./images/chef/"+c.getPathImage()); //elimina foto chef
 		this.chefService.deleteById(chefId);
 		return "redirect:/admin/manageChef";
 	}
@@ -109,6 +115,7 @@ public class ChefController {
 	public String changeChef(@Valid @ModelAttribute("chef") Chef chef,BindingResult bindingResult, Model model,
 			@PathVariable("chefId") Long chefId, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
 
+		//se non ha errori
 		if (!bindingResult.hasErrors()) {
 
 			Chef oldChef = chefService.findById(chefId);
@@ -146,11 +153,12 @@ public class ChefController {
 	@PostMapping("admin/chef")
 	public String newChef(@Valid @ModelAttribute("chef") Chef chef,BindingResult bindingResult,
 			Model model, @RequestParam("fileImage") MultipartFile multipartFile) throws IOException{
-		// this.movieValidator.validate(movie, bindingResult);
+		
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "admin/formNewChef.html";
 		} else {
 
+			//se carichi foto la salvi
 			if (!multipartFile.isEmpty()) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 				this.chefService.save(chef);
@@ -164,7 +172,7 @@ public class ChefController {
 				MvcConfig.saveUploadFile(uploadDir, multipartFile, newFileName);
 			}
 			else {
-				this.chefService.save(chef);
+				this.chefService.save(chef); //se non carichi foto salvi solo lo chef
 			}
 			model.addAttribute("chef", chef);
 			return "redirect:/allChef/"+chef.getId();

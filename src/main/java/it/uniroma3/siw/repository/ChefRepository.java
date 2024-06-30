@@ -12,8 +12,11 @@ public interface ChefRepository extends CrudRepository<Chef, Long> {
 	
 	public List<Chef> findByName(String name); //ricerca per nome
 	public List<Chef> findBySurname(String surname); //ricerca per cognome
-	public List<Chef> findByNameOrSurname(String name, String surname); //ricerca per nome o cognome
+	public List<Chef> findByNameContainingOrSurnameContaining(String name, String surname); //ricerca per nome o cognome
 	
+	@Query(value = "SELECT * FROM chef WHERE name ILIKE '%' || :nomeCognome || '%' OR surname ILIKE '%' || :nomeCognome || '%' OR (name || ' ' || surname) ILIKE '%' || :nomeCognome || '%' OR (surname || ' ' || name) ILIKE '%' || :nomeCognome || '%'", nativeQuery = true)
+	public List<Chef> findByNameSurnameInsensitive(@Param("nomeCognome") String nomeCognome); //ricerca per nome o cognome
+
 	//query che restuisce chef che matchano se passi 'Nome Cognome'
 	@Query(value = "SELECT * FROM chef WHERE name || ' ' || surname = :nomeCognome OR surname || ' ' || name = :nomeCognome", nativeQuery = true)
 	public List<Chef> findNomeCognome(@Param("nomeCognome") String nomeCognome);

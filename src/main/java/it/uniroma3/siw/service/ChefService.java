@@ -55,7 +55,7 @@ public class ChefService {
 	
 	//cerca per nome o cognome
 	public List<Chef> findByNameOrSurname(String name, String surname){
-		return chefRepository.findByNameOrSurname(name,surname);
+		return chefRepository.findByNameSurnameInsensitive(name);
 	}
 	
 	//elimina chef di id passato

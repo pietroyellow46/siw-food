@@ -28,12 +28,12 @@ public class RecipeService {
 	public void save(Recipe recipe) {
 		recipeRepository.save(recipe);
 	}
-	
+
 	//ricette dello chef di id passato
 	public List<Recipe> findByIdChef(Long idChef){
 		return this.recipeRepository.findByIdChef(idChef);
 	}
-	
+
 	//ricette di chef passato
 	public List<Recipe> findByChef(Chef Chef){
 		return this.recipeRepository.findByChef(Chef);
@@ -41,7 +41,7 @@ public class RecipeService {
 
 	//cerca per nome
 	public List<Recipe> findByName(String name) {
-		return this.recipeRepository.findByNomeContaining(name);
+		return this.recipeRepository.findByNameInsensitive(name);
 	}
 
 	//elimina ricetta
@@ -53,13 +53,19 @@ public class RecipeService {
 	public List<Recipe> findRecipeWithIngredient(Long ingredientId){
 		return this.recipeRepository.findRecipeWithIngredient(ingredientId);
 	}
-	
+
 	//dice se la ricetta è dello chef passato
 	public boolean isRecipeofChef(Long idRecipe, Long idChef) {
 		return this.recipeRepository.isRecipeofChef(idRecipe, idChef);
 	}
-	
+
+	//verifica esistenza di ricetta con chef dato e nome dato
 	public boolean existsByNomeAndChef(String nome, Chef chef) {
 		return this.recipeRepository.existsByNomeAndChef(nome, chef);
+	}
+
+	//verifica esistenza di ricetta con nome e chef dato e id diverso da quello passato
+	public boolean verificaEsistenzaRicettaConNomeEChef(Recipe ricetta) {
+		return recipeRepository.existsByNomeAndChefAndIdNot(ricetta.getNome(), ricetta.getChef(), ricetta.getId());
 	}
 }

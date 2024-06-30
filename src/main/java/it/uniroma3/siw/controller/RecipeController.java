@@ -40,32 +40,23 @@ public class RecipeController {
 	private ChefService chefService;
 
 	@Autowired
-	private IngredientService ingredientsService;
+	private IngredientService ingredientService;
 
 	@Autowired
 	private UsedIngredientService usedIngredientService;
 
 	@Autowired
 	private RecipeValidator recipeValidator;
-	
-	@GetMapping("/homepage")
-	public String home(Model model) {		
-		model.addAttribute("chef", this.chefService.findAllNotAdmin());
-		model.addAttribute("idRecipe",1);
-		Recipe recipe = this.recipeService.findById(Integer.toUnsignedLong(1));
-		model.addAttribute("recipe", recipe);
-		return "homepage.html";
-	}
 
 
-	//pagina con lista ricette
+	//lista ricette
 	@GetMapping("/recipe")
 	public String getRecipes(Model model) {		
 		model.addAttribute("recipes", this.recipeService.findAll());
 		return "recipes.html";
 	}
 
-	//pagina con dettagli di una ricetta
+	//dettagli ricetta
 	@GetMapping("/recipe/{id}")
 	public String getRecipe(@PathVariable("id") Long id, Model model) {
 		Recipe recipe = this.recipeService.findById(id);
@@ -94,8 +85,7 @@ public class RecipeController {
 		}
 
 		this.recipeValidator.validate(recipe, bindingResult);
-		if (bindingResult.hasErrors()) {
-			System.err.println(bindingResult.getAllErrors().toString());// sono emersi errori nel binding​
+		if (bindingResult.hasErrors()) { //errori nel binding
 			return "chef/formNewRecipe.html";
 		}
 		else {
@@ -133,7 +123,6 @@ public class RecipeController {
 
 			this.recipeService.save(recipe);
 			model.addAttribute(recipe);
-			System.out.println("\n\n" +recipe.getDescription()+ "\n\n");
 			return "redirect:/recipe/"+recipe.getId();
 		}
 	}
@@ -148,7 +137,13 @@ public class RecipeController {
 	//raccoglie con stringa del nome ricetta da cercare
 	@PostMapping("/searchRecipe")
 	public String foundRecipe(Model model, @RequestParam String nome) {
-		model.addAttribute("recipes", this.recipeService.findByName(nome));
+		List<Recipe> foundRecipes = this.recipeService.findByName(nome);
+
+		if (foundRecipes.isEmpty()) { //se non trova nulla manda alla pagina vuota
+			model.addAttribute("message", "Nessuna ricetta con i criteri desiderati trovata");
+			return "emptypage.html";
+		}
+		model.addAttribute("recipes", foundRecipes);
 		return "foundRecipe.html";
 	}
 
@@ -167,12 +162,20 @@ public class RecipeController {
 		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());		
 		boolean isAdmin = credentials.getRole().equals(Credentials.ADMIN_ROLE);
 
-		if (isAdmin) {
+		if (isAdmin) { //se sei admin tutte le ricette puoi modificare
 			model.addAttribute("recipes", this.recipeService.findAll());
 		}
-		else {
+		else { //se utente non admin solo le tue
 			Long idChef = credentials.getUser().getId();
-			model.addAttribute("recipes", this.recipeService.findByIdChef(idChef));
+			List<Recipe> myRecipe = this.recipeService.findByIdChef(idChef);
+
+			if (myRecipe.isEmpty()) { //se non hai ricette ritorni pagina vuota
+				model.addAttribute("message", "Non hai nessuna ricetta da poter modificare");
+				model.addAttribute("secondMessage", "Aggiungi prima una tua ricetta e poi riprova!");
+				return "emptypage.html";
+			}
+
+			model.addAttribute("recipes", myRecipe);
 		}		
 		return "chef/manageRecipe.html";
 	}
@@ -188,21 +191,15 @@ public class RecipeController {
 
 		Recipe recipe = this.recipeService.findById(id);
 		model.addAttribute("recipe", recipe);
+		boolean isMineRecipe = this.recipeService.isRecipeofChef(id, idChef);
 
 		//se sei admin ok
-		if(isAdmin) {
-			return "admin/formUpdateRecipe.html";
+		if(isAdmin || isMineRecipe) {
+			return "chef/formUpdateRecipe.html";
 		}
-		else {
-			boolean isMineRecipe = this.recipeService.isRecipeofChef(id, idChef);
-			System.out.println(isMineRecipe);
-			if (isMineRecipe) { //se la ricetta è tua ok
-				return "chef/formUpdateRecipe.html";
-			}
-			else { //se non sei ne admin ne la ricetta è tua errore
+		else  { //se non sei ne admin ne la ricetta è tua errore
 				return "error.html";
 			}
-		}
 	}
 
 	//pagina per scegliere quale chef mettere per la ricetta con id nel path
@@ -220,7 +217,7 @@ public class RecipeController {
 		Recipe recipe = recipeService.findById(idRecipe);
 		recipe.setChef(this.chefService.findById(idChef));
 
-		if (recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef()))
+		if (recipeService.existsByNomeAndChef(recipe.getNome(), recipe.getChef())) //se lo chef scelto ha già una ricetta con quel nome errore
 			return "redirect:/admin/addChef/"+idRecipe+"?error=true";
 		this.recipeService.save(recipe);
 		return "redirect:/chef/formUpdateRecipe/"+idRecipe;
@@ -238,7 +235,7 @@ public class RecipeController {
 
 		//se sei admin o la ricetta è tua ok sennò errore
 		if (isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE) ) {
-			List<Ingredient> ingredientsToAdd = this.ingredientsService.findIngredientNotInRecipe(id);
+			List<Ingredient> ingredientsToAdd = this.ingredientService.findIngredientNotInRecipe(id);
 			model.addAttribute("ingredientsToAdd", ingredientsToAdd);
 			model.addAttribute("recipe", this.recipeService.findById(id));
 
@@ -259,9 +256,10 @@ public class RecipeController {
 
 		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
 
+		//se è una tua ricetta o sei admin ok sennò errore
 		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
 			UsedIngredient newUsedIngredient = new UsedIngredient();
-			newUsedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
+			newUsedIngredient.setIngredient(this.ingredientService.findById(ingredientId));
 			newUsedIngredient.setRecipe(this.recipeService.findById(recipeId));
 			model.addAttribute("newUsedIngredient",newUsedIngredient);
 			model.addAttribute("ingredientId",ingredientId);
@@ -288,7 +286,7 @@ public class RecipeController {
 
 			//se la ricetta è tua o sei admin om sennò errore
 			if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-				usedIngredient.setIngredient(this.ingredientsService.findById(ingredientId));
+				usedIngredient.setIngredient(this.ingredientService.findById(ingredientId));
 				usedIngredient.setRecipe(this.recipeService.findById(recipeId));
 				this.usedIngredientService.save(usedIngredient);
 				return "redirect:/chef/updateIngredient/"+recipeId;
@@ -325,8 +323,6 @@ public class RecipeController {
 			model.addAttribute("recipeId", recipeId);
 			return "chef/formChangeRecipe.html";
 		}
-
-
 		return "error.html";
 	}
 
@@ -341,6 +337,7 @@ public class RecipeController {
 
 		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
 
+		//se tua ricetta o admin ok sennò errore
 		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
 
 			Recipe oldRecipe = recipeService.findById(recipeId);
@@ -355,6 +352,7 @@ public class RecipeController {
 
 				String uploadDir = "./images/recipe/"+recipe.getId();
 
+				//se non hai caricato file lo lasci con quello vecchio
 				if (!mainMultipartFile.isEmpty()) {
 					String mainImageName = StringUtils.cleanPath(mainMultipartFile.getOriginalFilename());
 					String newMainFileName = recipe.getId()+"Main."+MvcConfig.getExtension(mainImageName);
@@ -363,6 +361,7 @@ public class RecipeController {
 				} else
 					recipe.setMainImage(oldRecipe.getMainImage());
 
+				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[0].isEmpty()) {
 					String extraImageName1 = StringUtils.cleanPath(extraMultipartFiles[0].getOriginalFilename());
 					String newExtraImage1 = recipe.getId()+"Extra1."+MvcConfig.getExtension(extraImageName1);
@@ -371,6 +370,7 @@ public class RecipeController {
 				} else
 					recipe.setExtraImage1(oldRecipe.getExtraImage1());
 
+				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[1].isEmpty()) {
 					String extraImageName2 = StringUtils.cleanPath(extraMultipartFiles[1].getOriginalFilename());
 					String newExtraImage2 = recipe.getId()+"Extra2."+MvcConfig.getExtension(extraImageName2);
@@ -379,6 +379,7 @@ public class RecipeController {
 				} else
 					recipe.setExtraImage2(oldRecipe.getExtraImage2());
 
+				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[2].isEmpty()) {
 					String extraImageName3 = StringUtils.cleanPath(extraMultipartFiles[2].getOriginalFilename());
 					String newExtraImage3 = recipe.getId()+"Extra3."+MvcConfig.getExtension(extraImageName3);
@@ -406,9 +407,14 @@ public class RecipeController {
 
 		boolean isMineRecipe = this.recipeService.isRecipeofChef(recipeId, idChef);
 
-		//se la ricetta è tua o admin pk sennò errore
+		//se la ricetta è tua o admin ok sennò errore
 		if(isMineRecipe || credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
 			Recipe recipe = recipeService.findById(recipeId);
+			MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+recipe.getMainImage());
+			MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+recipe.getExtraImage1());
+			MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+recipe.getExtraImage2());
+			MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+recipe.getExtraImage3());
+			MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/");
 			this.recipeService.deleteRecipe(recipe);
 			return "redirect:/chef/manageRecipe";
 		}

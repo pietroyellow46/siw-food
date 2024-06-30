@@ -13,7 +13,7 @@ public class CredentialsValidator implements Validator {
   @Autowired
   private CredentialsService credentialsService;
 
-  @Override
+  @Override //verifica se esiste altro chef con stesso username
   public void validate(Object o, Errors errors) {
     Credentials credentials = (Credentials)o;
     if (credentials.getUsername()!=null && credentialsService.existsByUsername(credentials.getUsername())) {
