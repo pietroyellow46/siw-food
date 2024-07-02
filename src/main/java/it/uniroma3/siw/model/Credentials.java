@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 //doppioni su username
@@ -23,9 +24,11 @@ public class Credentials {
 
 	@Column(unique = true)
 	@NotBlank
+	@Size(max = 15)
 	private String username;
 
 	@NotBlank
+	@Size(min = 5)
 	private String password;
 
 	private String role;

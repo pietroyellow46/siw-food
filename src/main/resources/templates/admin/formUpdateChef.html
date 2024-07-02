@@ -18,7 +18,7 @@
 		<nav>
 			<ul class='nav-bar'>
 				<!-- logo -->
-				<li class='logo'><a href=''><img src='/images/logowhite.png' alt='logo' /></a></li>
+				<li class='logo'><a href='/'><img src='/images/logowhite.png' alt='logo' /></a></li>
 				<!-- menu navbar -->
 				<span class="navmenu">
 					<!-- barraRicerca -->
@@ -117,8 +117,8 @@
 					th:if="${chef.dateBirth!=null}"></div> <!-- dataNascita chef -->
 				<div th:unless="${chef.dateBirth!=null}">Data di nascita: non disponibile</div>
 				<!-- dataNascita chef non disponibile -->
-				<div th:text="'Email: '+${chef.email}" th:if="${chef.email!=null}"></div> <!-- email chef -->
-				<div th:unless="${chef.email!=null}">Email: non disponibile</div> <!-- email chef non disponibile -->
+				<div th:text="'Email: '+${chef.email}" th:if="${chef.email!=null && chef.email!=''}"></div> <!-- email chef -->
+				<div th:unless="${chef.email!=null && chef.email!=''}">Email: non disponibile</div> <!-- email chef non disponibile -->
 				<div th:text="'Username: '+${credentials.username}" th:if="${credentials!=null}"></div>
 				<!-- username chef -->
 				<div th:unless="${credentials!=null}">Username: non disponibile</div>

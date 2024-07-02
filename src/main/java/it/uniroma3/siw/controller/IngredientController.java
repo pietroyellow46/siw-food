@@ -158,6 +158,7 @@ public class IngredientController {
 		}
 		else {
 			if (!multipartFile.isEmpty()) { //se vuoto lasci la vecchia foto
+				MvcConfig.deleteFile("./images/ingredient/"+oldIngredient.getPathImage()); //elimina la foto se presente
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 				String newFileName = "ingredient"+ingredient.getId()+"."+MvcConfig.getExtension(fileName);

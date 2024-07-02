@@ -87,6 +87,7 @@ public class ChefController {
 	@GetMapping("admin/formUpdateChef/{id}")
 	public String formUpdateIngredient(@PathVariable("id") Long id, Model model) {
 		Chef c = this.chefService.findById(id);
+		model.addAttribute("credentials", c.getCredential());
 		model.addAttribute("chef", c);
 		model.addAttribute("recipes", this.recipeService.findByIdChef(id)); //ricette dello chef
 		return "admin/formUpdateChef.html";
@@ -125,6 +126,8 @@ public class ChefController {
 
 			//se non ho passato nulla lascio la vecchia foto
 			if (!multipartFile.isEmpty()) {
+				MvcConfig.deleteFile("./images/chef/"+oldChef.getPathImage()); //elimina foto chef
+
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 				String newFileName = "chef"+chef.getId()+"."+MvcConfig.getExtension(fileName);

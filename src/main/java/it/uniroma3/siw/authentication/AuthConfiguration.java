@@ -21,7 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class AuthConfiguration {
 	@Autowired
 	private DataSource dataSource;
-
+	
 	//specifichi come ricavare le credenziali dell utente
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,7 +46,7 @@ public class AuthConfiguration {
 		// .requestMatchers("/**").permitAll()
 
 		//cosa accede chi non loggato
-		.requestMatchers(HttpMethod.GET,"/","static/images/logowhite.png","static/images/logoblack.png","static/images/logofull.png","/static/images/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.png","/static/images/search1.png","/index","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "homepage", "/login", "/rest/**").permitAll()
+		.requestMatchers(HttpMethod.GET,"/","/static/images/background.jpg","static/images/logowhite.png","/register","/css/**", "/images/**", "favicon.ico", "/recipe/**", "/ingredient/**","/allChef/**","/searchRecipe/**","/searchIngredient/**", "/searchChef/**", "/login", "/rest/**").permitAll()
 		.requestMatchers(HttpMethod.POST,"/register", "/login","/searchRecipe","/searchIngredient", "/searchChef").permitAll()
 
 		//cosa accede chi loggato o admin o chef normale

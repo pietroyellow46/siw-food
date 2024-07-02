@@ -354,6 +354,7 @@ public class RecipeController {
 
 				//se non hai caricato file lo lasci con quello vecchio
 				if (!mainMultipartFile.isEmpty()) {
+					MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+oldRecipe.getMainImage());
 					String mainImageName = StringUtils.cleanPath(mainMultipartFile.getOriginalFilename());
 					String newMainFileName = recipe.getId()+"Main."+MvcConfig.getExtension(mainImageName);
 					recipe.setMainImage(newMainFileName);
@@ -363,6 +364,7 @@ public class RecipeController {
 
 				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[0].isEmpty()) {
+					MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+oldRecipe.getExtraImage1());
 					String extraImageName1 = StringUtils.cleanPath(extraMultipartFiles[0].getOriginalFilename());
 					String newExtraImage1 = recipe.getId()+"Extra1."+MvcConfig.getExtension(extraImageName1);
 					recipe.setExtraImage1(newExtraImage1);
@@ -372,6 +374,7 @@ public class RecipeController {
 
 				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[1].isEmpty()) {
+					MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+oldRecipe.getExtraImage2());
 					String extraImageName2 = StringUtils.cleanPath(extraMultipartFiles[1].getOriginalFilename());
 					String newExtraImage2 = recipe.getId()+"Extra2."+MvcConfig.getExtension(extraImageName2);
 					recipe.setExtraImage2(newExtraImage2);
@@ -381,6 +384,7 @@ public class RecipeController {
 
 				//se non hai caricato file lo lasci con quello vecchio
 				if (!extraMultipartFiles[2].isEmpty()) {
+					MvcConfig.deleteFile("./images/recipe/"+recipe.getId()+"/"+oldRecipe.getExtraImage3());
 					String extraImageName3 = StringUtils.cleanPath(extraMultipartFiles[2].getOriginalFilename());
 					String newExtraImage3 = recipe.getId()+"Extra3."+MvcConfig.getExtension(extraImageName3);
 					recipe.setExtraImage3(newExtraImage3);
