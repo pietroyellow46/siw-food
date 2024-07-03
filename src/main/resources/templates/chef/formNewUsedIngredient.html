@@ -24,15 +24,15 @@
 
 			<!-- Field quantita -->
 			<div class="input-box">
-				<input type="text" placeholder="Quantità" th:field="${newUsedIngredient.quantity}" /> <!-- required -->
+				<input type="text" placeholder="Quantità" th:field="${newUsedIngredient.quantity}" required /> <!-- required -->
 				<span class="error-attribute" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
 				<i class='bx bx-pencil '></i>
 			</div>
 
 			<!-- Field unita di misura -->
 			<div class="input-box">
-				<input type="text" placeholder="Unità di misura" th:field="${newUsedIngredient.measurement}" />
-				<!-- required -->
+				<input type="text" placeholder="Unità di misura" th:field="${newUsedIngredient.measurement}" required /> <!-- required -->
+				
 				<span class="error-attribute" th:if="${#fields.hasErrors('measurement')}"
 					th:errors="*{measurement}"></span>
 				<i class='bx bx-text'></i>

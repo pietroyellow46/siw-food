@@ -24,14 +24,14 @@
 
 			<!-- Field nome -->
 			<div class="input-box">
-				<input type="text" placeholder="Nome" th:field="${chef.name}" /> <!-- required -->
+				<input type="text" placeholder="Nome" th:field="${chef.name}" required /> <!-- required -->
 				<span class="error-attribute" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 				<i class='bx bxs-user'></i>
 			</div>
 
 			<!-- Field cognome -->
 			<div class="input-box">
-				<input type="text" placeholder="Cognome" th:field="${chef.surname}" /> <!-- required -->
+				<input type="text" placeholder="Cognome" th:field="${chef.surname}" required /> <!-- required -->
 				<span class="error-attribute" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
 				<i class='bx bxs-lock-alt'></i>
 			</div>
@@ -44,7 +44,7 @@
 
 			<!-- Field email -->
 			<div class="input-box">
-				<input type="text" placeholder="Email" th:field="${chef.email}" /> <!-- email -->
+				<input type="email" placeholder="Email" th:field="${chef.email}" /> <!-- email -->
 				<span class="error-attribute" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
 				<i class='bx bx-at'></i>
 			</div>
