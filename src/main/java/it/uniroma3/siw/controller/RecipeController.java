@@ -274,7 +274,6 @@ public class RecipeController {
 	//raccoglie la post per aggiungere un ingrediente alla ricetta
 	@PostMapping("chef/usedIngredient/{ingredientId}/{recipeId}")
 	public String newUsedIngredient(@Valid @ModelAttribute("newUsedIngredient") UsedIngredient usedIngredient,BindingResult bindingResult, Model model, @PathVariable("ingredientId") Long ingredientId, @PathVariable("recipeId") Long recipeId){
-		// this.movieValidator.validate(movie, bindingResult);
 		if (bindingResult.hasErrors()) { // sono emersi errori nel binding​
 			return "chef/formNewUsedIngredient.html";
 		} else {
